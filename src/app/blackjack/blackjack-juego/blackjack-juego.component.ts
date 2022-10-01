@@ -18,6 +18,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   sePasaJugador: boolean = false;
   blackJack: boolean = false;
+  manoTerminada: boolean = false;
 
   jugador: Carta[] = [];
   crupier: Carta[] = [];  
@@ -121,6 +122,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
 
   terminarJugada(){
+    this.manoTerminada = true;
     while(this.puntajeCrupier < 21 && this.puntajeCrupier <= 16){
       this.obtenerCartaCrupier();
     }

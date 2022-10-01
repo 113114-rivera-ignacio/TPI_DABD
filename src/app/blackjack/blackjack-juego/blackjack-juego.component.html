@@ -12,10 +12,10 @@
     <br>
     <div class="row">
       <div class="d-grid gap-2 col-5 mx-auto">
-        <button *ngIf="puntajeJugador <= 21" type="button" class="btn btn-success btn-lg" (click)="obtenerCartaJugador()">Pedir Carta</button>
+        <button *ngIf="puntajeJugador <= 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-success btn-lg" (click)="obtenerCartaJugador()">Pedir Carta</button>
       </div>
       <div class="d-grid gap-2 col-5 mx-auto">
-        <button *ngIf="!blackJack && !sePasaJugador" type="button" class="btn btn-warning btn-lg" (click)="terminarJugada()">Plantarse</button>
+        <button *ngIf="!blackJack && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-lg" (click)="terminarJugada()">Plantarse</button>
       </div>
     </div>
   </div>  

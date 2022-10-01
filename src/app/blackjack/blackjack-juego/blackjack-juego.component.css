@@ -1,0 +1,18 @@
+#imgMesa {
+    padding-top: 5%;
+}
+
+img{
+    height: 650px;
+    width: 1000px;
+}
+
+button{
+    display: block;
+}
+
+/* #fondo{
+   background-image: url('https://www.pokerproductos.com/WebRoot/StoreES/Shops/61976209/52DC/24BC/C64E/D231/21E0/C0A8/2BBC/BEC2/alquiler-mesa-blackjack-01.jpg');
+   width: 100%;
+   height: 100%;
+} */

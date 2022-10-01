@@ -1,0 +1,24 @@
+<div id="fondo" class="container">
+  <div class="d-grid gap-2 col-5 mx-auto py-2">
+    <button type="button" class="btn btn-success btn-lg" (click)="jugarMano()">Jugar mano</button>
+  </div>
+  
+  <div class="container" *ngIf="mesaVisible">
+    <div class="text-center">
+      <img id="imgMesa"
+        src="https://www.pokerproductos.com/WebRoot/StoreES/Shops/61976209/52DC/24BC/C64E/D231/21E0/C0A8/2BBC/BEC2/alquiler-mesa-blackjack-01.jpg"
+        class="rounded" alt="...">
+    </div>
+    <br>
+    <div class="row">
+      <div class="d-grid gap-2 col-5 mx-auto">
+        <button type="button" class="btn btn-success btn-lg" (click)="obtenerCartaJugador()">Pedir Carta</button>
+      </div>
+      <div class="d-grid gap-2 col-5 mx-auto">
+        <button type="button" class="btn btn-warning btn-lg">Plantarse</button>
+      </div>
+    </div>
+  </div>  
+</div>
+
+

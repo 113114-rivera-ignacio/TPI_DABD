@@ -10,18 +10,16 @@ import { CartaService } from 'src/app/services/carta.service';
   styleUrls: ['./blackjack-juego.component.css']
 })
 export class BlackjackJuegoComponent implements OnInit {
-  cartas : Carta[];  
-
-  jugador : Carta[] = [];
-  croupier : Carta[] = [];
-
+  cartas: Carta[];  
   cartasUsadas: Carta[]= [];
 
+  puntajeJugador: number = 0;
+  puntajeCrupier: number = 0;
+
+  jugador: Carta[] = [];
+  croupier: Carta[] = [];  
+
   mesaVisible: boolean = false;
-
-
-
-  //@Output() onPedir = new EventEmitter();
 
   private suscripcion = new Subscription();
 
@@ -42,31 +40,43 @@ export class BlackjackJuegoComponent implements OnInit {
          }
        })
      )
-   }
+  }
  
-   obtenerCartaJugador(){
-     const random = Math.floor(Math.random()*52);
-    //  let carta: Carta = this.cartas[random];
-    // const cartaRandom = this.cartas[random];    
-     this.jugador.push(this.cartas[random]);
-     this.cartas.splice(random,1); 
-   }
+  obtenerCartaJugador(){
+    const random = Math.floor(Math.random()*3);
+    this.puntajeJugador = this.calcularPuntaje(this.cartas[random], this.puntajeJugador, this.jugador);
+    this.jugador.push(this.cartas[random]);
+    this.cartas.splice(random,1); 
+    console.log(this.jugador);
+    console.log(this.puntajeJugador);
+  }
 
-   obtenerCartaCroupier(){
+  obtenerCartaCroupier(){
     const random = Math.floor(Math.random()*this.cartas.length);
-     this.croupier.push(this.cartas[random]);
-    //this.cartasUsadas.push(this.cartas[random]);
-     this.cartas.splice(random,1); 
-   }
+    this.croupier.push(this.cartas[random]);
+    this.cartas.splice(random,1); 
+  }
 
-   jugarMano(){
+  calcularPuntaje(carta: Carta, puntaje: number, listaCartas: Carta[]): number{
+    let valor = carta.valor;
+    if(carta.valor == 1 && puntaje < 21){
+      valor = 11;
+    }
+    puntaje += valor;
+    listaCartas.forEach(element => {
+      if(element.valor == 1 && puntaje > 21){
+        puntaje -= 10;
+      }
+    });
+    return puntaje;
+  }
+
+  jugarMano(){
     this.mesaVisible = true;
     this.obtenerCartaJugador();
     this.obtenerCartaCroupier();
     this.obtenerCartaJugador();
     this.obtenerCartaCroupier();
-    console.log(this.jugador);
-    console.log(this.croupier);
-   }
+  }
 
 }

@@ -7,7 +7,7 @@ import { Carta } from '../models/carta';
   providedIn: 'root'
 })
 export class CartaService {
-
+ 
   private URL: string ="https://632b55121090510116d6fac2.mockapi.io/cartas/";
 
   constructor(private http: HttpClient) { }

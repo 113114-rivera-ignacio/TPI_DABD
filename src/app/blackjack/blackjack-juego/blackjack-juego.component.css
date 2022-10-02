@@ -3,7 +3,7 @@
 } */
 
 .imgMesa{
-    height: auto;
+    height: 100%;
     width: max-content;
 }
 
@@ -16,3 +16,4 @@ button{
    width: 100%;
    height: 100%;
 } */
+

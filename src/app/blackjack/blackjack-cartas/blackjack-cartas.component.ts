@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter,Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
 import { CartaService } from 'src/app/services/carta.service';
@@ -10,14 +10,16 @@ import { CartaService } from 'src/app/services/carta.service';
 })
 export class BlackjackCartasComponent implements OnInit {
 
-  cartas : Carta[];
-  @Output() onPedir = new EventEmitter();
+  @Input() carta : Carta;
+  @Input() tipo:string;
+  //@Output() onPedir = new EventEmitter();
 
   private suscripcion = new Subscription();
 
-  constructor(private cartaService : CartaService) { }
+  constructor() { }
 
   ngOnInit(): void {
+   
     //this.darCarta();
   }
 

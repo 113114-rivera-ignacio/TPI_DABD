@@ -10,6 +10,7 @@ import { CartaService } from 'src/app/services/carta.service';
   styleUrls: ['./blackjack-juego.component.css']
 })
 export class BlackjackJuegoComponent implements OnInit, OnDestroy {
+  
   cartas: Carta[];  
   cartasUsadas: Carta[] = [];
 

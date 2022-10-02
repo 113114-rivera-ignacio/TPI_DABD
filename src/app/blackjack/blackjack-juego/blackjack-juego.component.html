@@ -1,11 +1,11 @@
 
-<div class="container-fluid mb-2"> 
+<div class="container-fluid mb-2 mt-2"> 
   <div class="row">
     <div class="col-2">
     <button type="button" class="btn btn-success btn-sm " (click)="jugarMano()">Jugar mano</button>
   </div>
     <div class="col-2">
-      <button *ngIf="puntajeJugador <= 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-success btn-sm" (click)="obtenerCartaJugador()">Pedir Carta</button>
+      <button *ngIf="puntajeJugador <= 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm" (click)="obtenerCartaJugador()">Pedir Carta</button>
     </div>
     <div class="col-1">
       <button *ngIf="!blackJack && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm" (click)="terminarJugada()">Plantarse</button>
@@ -16,13 +16,19 @@
 
   <div class="container-fluid bg-image" 
      style="background-image: url('../../../assets/mesa.png');">
-     <div class="row" style="margin-left: 450px; margin-top: 90px;">
-      <div class="col">
+     <div class="row" style="margin-left: 170px; margin-top: 90px;">
+      <div class="col-3">
+        <h6 class="fst-italic text-white">Puntaje Crupier: {{puntajeCrupier}}</h6>
+      </div>
+      <div class="col-7">
         <app-blackjack-cartas [carta]=carta *ngFor="let carta of crupier"></app-blackjack-cartas>
       </div>     
     </div>
-    <div class="row" style="margin-left: 250px;margin-top:130px;">
-      <div  class="col" >
+    <div class="row" style="margin-left: 170px;margin-top:130px;">
+      <div class="col-3">
+        <h6 class="fst-italic text-white">Puntaje Jugador: {{puntajeJugador}}</h6>
+      </div>
+      <div  class="col-7" >
         <app-blackjack-cartas [carta]=carta *ngFor="let carta of jugador"></app-blackjack-cartas>
       </div>
     </div>

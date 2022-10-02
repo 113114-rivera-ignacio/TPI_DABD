@@ -1,38 +1,40 @@
 
-   <div class="container align-self-center" style="min-height:750px; background-repeat:no-repeat!important; background-position:center;background:url('../../../assets/mesa2.png')">
-    <button type="button" class="btn btn-success btn-lg d-block" (click)="jugarMano()">Jugar mano</button>
-    <div class="row">
+<div class="container-fluid mb-2"> 
+  <div class="row">
+    <div class="col-2">
+    <button type="button" class="btn btn-success btn-sm " (click)="jugarMano()">Jugar mano</button>
+  </div>
+    <div class="col-2">
+      <button *ngIf="puntajeJugador <= 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-success btn-sm" (click)="obtenerCartaJugador()">Pedir Carta</button>
+    </div>
+    <div class="col-1">
+      <button *ngIf="!blackJack && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm" (click)="terminarJugada()">Plantarse</button>
+    </div>
+  </div>
+</div>
 
-      <div class="col align-self-center" style="margin-left: 150px;">
+
+  <div class="container-fluid bg-image" 
+     style="background-image: url('../../../assets/mesa.png');">
+     <div class="row" style="margin-left: 450px; margin-top: 90px;">
+      <div class="col">
         <app-blackjack-cartas [carta]=carta *ngFor="let carta of crupier"></app-blackjack-cartas>
+      </div>     
+    </div>
+    <div class="row" style="margin-left: 250px;margin-top:130px;">
+      <div  class="col" >
+        <app-blackjack-cartas [carta]=carta *ngFor="let carta of jugador"></app-blackjack-cartas>
       </div>
     </div>
-
-      <div class="row" style="margin-top: 150px;">
-      <div class="col align-self-end">
-        <app-blackjack-cartas  [carta]=carta *ngFor="let carta of jugador" ></app-blackjack-cartas>
-      </div>
-      
-    </div>
-    
+  </div>
 
 
-    <div class="row">
-      <div class="d-grid gap-2 col-5 mx-auto">
-        <button *ngIf="puntajeJugador <= 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-success btn-lg" (click)="obtenerCartaJugador()">Pedir Carta</button>
-      </div>
-      <div class="d-grid gap-2 col-5 mx-auto">
-        <button *ngIf="!blackJack && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-lg" (click)="terminarJugada()">Plantarse</button>
-      </div>
-    </div>
 
-
+  
+  
+ 
     
    
-
-    
-
-   </div>
 
       
 

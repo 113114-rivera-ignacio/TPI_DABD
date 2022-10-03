@@ -116,6 +116,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.resultado = 3;
       this.volverAJugar = false;
       this.mostrarMensajeGano("BlackJack!!!");
+      this.manoTerminada= true;
       this.mostrarCrupier();
     }
     if (this.blackJack && this.puntajeCrupier == 21) {

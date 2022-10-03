@@ -1,19 +1,21 @@
   <div class="container text-center">
     <div class="row  mt-2">
       <div class="col-2">
-        <button type="button" class="btn btn-dark btn-sm " (click)="jugarMano()">Jugar mano</button>
+        <button *ngIf="volverAJugarMano" type="button" class="btn btn-dark btn-sm " (click)="jugarMano()">Jugar mano</button>
       </div>
       <div class="col-2">
-        <button *ngIf="puntajeJugador <= 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm" (click)="obtenerCartaJugador()">Pedir Carta</button>
+        <button *ngIf="puntajeJugador < 21 && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm" (click)="obtenerCartaJugador()">Pedir Carta</button>
       </div>
       <div class="col-2">
         <button *ngIf="!blackJack && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm" (click)="terminarJugada()">Plantarse</button>
       </div>
-    </div>
+      <div class="col-2">
+        <button *ngIf="!volverAJugar" type="button" class="btn btn-warning btn-sm" (click)="limpiarMesa()">Volver a jugar</button>
+      </div>
     <div style="margin-top: 50px;">
     <div class="row">
       <div class="col-2">
-        <h6 class="fst-italic text-white">Puntaje Crupier: {{puntajeCrupier}}</h6>
+        <h6 class="fst-italic text-white">Puntaje Crupier: {{mostrarPuntajeCrupier}}</h6>
       </div>
       <div class="col-10">
         <app-blackjack-cartas [carta]=carta *ngFor="let carta of crupier"></app-blackjack-cartas>

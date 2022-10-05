@@ -163,16 +163,22 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.obtenerCartaCrupier();
       this.mostrarCrupier();
     }
-
     if (
       this.puntajeCrupier <= 21 &&
       this.puntajeCrupier > this.puntajeJugador
     ) {
       this.resultado = 2;
       this.mostrarMensajePerdio();
-    } else {
+    } else if (this.puntajeJugador <= 21 &&
+      (this.puntajeCrupier < this.puntajeJugador || 
+      this.puntajeCrupier >21)) {
       this.resultado = 1;
       this.mostrarMensajeGano();
+    } 
+    
+    if (this.puntajeCrupier === this.puntajeJugador){
+      this.resultado = 0;
+      this.mostrarMensajeEmpate();
     }
   }
 

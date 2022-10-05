@@ -8,9 +8,10 @@ import { InicioSesionComponent } from './inicio-sesion/inicio-sesion.component';
 
 const routes: Routes = [
   {path: 'home/login', component: InicioSesionComponent},
+  {path: 'login', component: InicioSesionComponent},
   {path: 'home', component: HomeComponent},
   {path: 'juego', component: BlackjackJuegoComponent},
-  {path: '**', component: ErrorComponent}
+  {path: '**', component: HomeComponent}
 ];
 
 @NgModule({

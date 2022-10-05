@@ -116,17 +116,17 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     if (this.cartas.length < 20) {
       //catel
       Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
+        title: 'No hay suficientes cartas',
+        text: "Quieres volver a mezclar para seguir jugando?",
         imageUrl: '../../../assets/empate.png',
         imageHeight: 300,
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
+        confirmButtonText: 'Si, mezclar!',
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          this.obtenerMazo();
         }
       });
     } else {
@@ -189,7 +189,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   mostrarMensajePerdio() {
     Swal.fire({
-      text: 'Te pasaste de 21, perdiste',
+      text: 'Perdiste, mejor suerte la proxima',
       imageUrl: '../../../assets/perdiste.png',
       imageHeight: 300,
       background: 'black',

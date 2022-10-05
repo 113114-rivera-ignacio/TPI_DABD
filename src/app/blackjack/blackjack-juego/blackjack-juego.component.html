@@ -19,8 +19,7 @@
       </div>
       <div class="col-10">
         <app-blackjack-cartas [carta]=carta *ngFor="let carta of crupier"></app-blackjack-cartas>
-      </div>
-     
+      </div>     
     </div>
     <div class="row mt-2">
       <div class="col-2">
@@ -28,8 +27,10 @@
       </div>
       <div class="col-10">
         <app-blackjack-cartas [carta]=carta *ngFor="let carta of jugador"></app-blackjack-cartas>
-      </div>
-     
+      </div>     
+    </div>
+    <div class="col-2">
+      <h6 class="fst-italic text-white">Cantidad de cartas: {{cartas.length}}</h6>
     </div>
   </div>
   </div>

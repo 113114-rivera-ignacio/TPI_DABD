@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
   selector: 'app-blackjack-juego',
   templateUrl: './blackjack-juego.component.html',
   styleUrls: ['./blackjack-juego.component.css'],
-})
+}) 
 export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   cartas: Carta[];
   cartasUsadas: Carta[] = [];

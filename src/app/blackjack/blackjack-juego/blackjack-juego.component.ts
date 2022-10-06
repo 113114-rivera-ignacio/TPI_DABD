@@ -66,11 +66,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.puntajeJugador,
       this.jugador
     );
-    if (
-      this.jugador.some((obj: Carta) => {
-        return obj.valor === 11;
-      })
-    ) {
+    if (this.jugador.some((obj: Carta) => {return obj.valor === 11;}) && this.puntajeJugador > 21) {
       this.mostrarPuntajeJugador = this.puntajeJugador - 10 + '/' + this.puntajeJugador;      
     } else {
       this.mostrarPuntajeJugador = this.puntajeJugador.toString();      

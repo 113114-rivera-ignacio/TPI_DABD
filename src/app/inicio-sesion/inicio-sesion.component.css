@@ -1,8 +1,10 @@
-img{
-  height: 200px;  
-  width: 250px;
+#imgLogo{
+  height: auto;  
+  width: 30vw;
 }
-
-section{
-    margin-top: 10%;
+#tarjeta{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
 }

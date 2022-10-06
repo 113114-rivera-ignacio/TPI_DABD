@@ -16,6 +16,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   puntajeJugador: number = 0;
   puntajeCrupier: number = 0;
   mostrarPuntajeCrupier: number = 0;
+  mostrarPuntajeJugador: string = "0";
   idCarta: string = '';
 
   sePasaJugador: boolean = false;
@@ -69,18 +70,18 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
         return obj.valor === 11;
       })
     ) {
-      console.log(
-        'Jugador: ' + (this.puntajeJugador - 10) + '/' + this.puntajeJugador
-      );
+      this.mostrarPuntajeJugador = this.puntajeJugador - 10 + '/' + this.puntajeJugador;      
     } else {
-      console.log('Jugador: ' + this.puntajeJugador);
+      this.mostrarPuntajeJugador = this.puntajeJugador.toString();      
     }
     console.log(this.jugador);
     this.cartas.splice(random, 1);
+
     if (this.puntajeJugador > 21) {
-      this.volverAJugar = false;
-      this.mostrarMensajePerdio();
+      this.manoTerminada = true;
       this.mostrarCrupier();
+      this.volverAJugar = false;
+      this.mostrarMensajePerdio();      
       this.sePasaJugador = true;
       this.resultado = 2;
     }
@@ -116,11 +117,12 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     if (this.cartas.length < 20) {
       //catel
       Swal.fire({
-        title: 'No hay suficientes cartas',
-        text: "Quieres volver a mezclar para seguir jugando?",
-        imageUrl: '../../../assets/empate.png',
+        title: "Quieres volver a mezclar para seguir jugando?",
+        imageUrl: '../../../assets/NA.png',
         imageHeight: 300,
         showCancelButton: true,
+        background: 'black',
+        color: 'white',
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si, mezclar!',
@@ -138,19 +140,23 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.obtenerCartaJugador();
       this.obtenerCartaCrupier();
       this.mostrarCrupier();
-      if (this.puntajeJugador == 21) {
+      if (this.puntajeJugador == 21) { 
         this.blackJack = true;
+        this.mostrarCrupier();
+
+        if(this.puntajeCrupier == 21){
+          this.resultado = 0;
+          this.volverAJugar = false;        
+          this.manoTerminada = true;
+          this.mostrarMensajeEmpate();
+          return;
+        }  
+        
         this.resultado = 3;
-        this.volverAJugar = false;
-        this.mostrarMensajeGano('BlackJack!!!');
+        this.volverAJugar = false;        
         this.manoTerminada = true;
-        this.mostrarCrupier();
-      }
-      if (this.blackJack && this.puntajeCrupier == 21) {
-        this.resultado = 0;
-        this.mostrarMensajeEmpate();
-        this.mostrarCrupier();
-      }
+        this.mostrarMensajeGano('BlackJack!!!');        
+      }      
     }
   }
 
@@ -158,6 +164,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.manoTerminada = true;
     this.volverAJugar = false;
     this.mostrarCrupier();
+    this.mostrarPuntajeJugador = this.puntajeJugador.toString();
 
     while (this.puntajeCrupier < 21 && this.puntajeCrupier <= 16) {
       this.obtenerCartaCrupier();
@@ -218,6 +225,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.jugador = [];
     this.crupier = [];
     this.puntajeJugador = 0;
+    this.mostrarPuntajeJugador = "0";
     this.mostrarPuntajeCrupier = 0;
     this.puntajeCrupier = 0;
     this.volverAJugar = true;

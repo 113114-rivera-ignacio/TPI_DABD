@@ -12,35 +12,16 @@ export class BlackjackCartasComponent implements OnInit {
 
   @Input() carta : Carta;
   @Input() tipo:string;
-  //@Output() onPedir = new EventEmitter();
+
 
   private suscripcion = new Subscription();
 
   constructor() { }
 
   ngOnInit(): void {
-   
-    //this.darCarta();
+
   }
 
-  // darCarta(){
-  //  this.suscripcion.add(
-  //     this.cartaService.obtenerCarta().subscribe({
-  //       next: (carta : Carta[]) => {
-  //         this.cartas = carta;
-  //       },
-  //       error: () => {
-  //         alert('No se pudo obtener carta');
-  //       }
-  //     })
-  //   )
-  // }
-
-  // obtenerCarta(){
-  //   const random = Math.floor(Math.random()*52);
-  //   const cartaRandom = this.cartas[random];
-  //   console.log(cartaRandom);
-  // }
   
 
 

@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './blackjack-juego.component.html',
   styleUrls: ['./blackjack-juego.component.css'],
 })
-//INTEGRANTES: 113114-
+
 export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   cartas: Carta[];
   cartasUsadas: Carta[] = [];
@@ -112,10 +112,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   jugarMano() {
     if (this.cartas.length < 20) {
-      //catel
+      
       Swal.fire({
         title: "Quieres volver a mezclar para seguir jugando?",
-        imageUrl: '../../../assets/NA.png',
+        imageUrl: 'https://github.com/Noe1129/Imagenes_blackjack/blob/main/NA.png?raw=true',
         imageHeight: 300,
         showCancelButton: true,
         background: 'black',
@@ -188,7 +188,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   mostrarMensajeGano(mensaje?: string) {
     Swal.fire({
-      imageUrl: '../../../assets/ganaste.png',
+      imageUrl: 'https://github.com/Noe1129/Imagenes_blackjack/blob/main/ganaste.png?raw=true',
       imageHeight: 300,
       text: mensaje,
       background: 'black',
@@ -199,8 +199,8 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   mostrarMensajePerdio() {
     Swal.fire({
-      text: 'Perdiste, mejor suerte la proxima',
-      imageUrl: '../../../assets/perdiste.png',
+      text: 'Perdiste, mejor suerte la próxima',
+      imageUrl: 'https://github.com/Noe1129/Imagenes_blackjack/blob/main/perdiste.png?raw=true',
       imageHeight: 300,
       background: 'black',
       color: 'white',
@@ -210,7 +210,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   mostrarMensajeEmpate() {
     Swal.fire({
-      imageUrl: '../../../assets/empate.png',
+      imageUrl: 'https://github.com/Noe1129/Imagenes_blackjack/blob/main/empate.png?raw=true',
       imageHeight: 300,
       background: 'black',
       color: 'white',

@@ -1,15 +1,15 @@
 <div class="container text-center">
-  <div class="row  mt-2">
+  <div class="row  pt-2">
     <div class="col-2">
       <button *ngIf="volverAJugarMano" type="button" class="btn btn-dark btn-sm " (click)="jugarMano()">Jugar
         mano</button>
     </div>
     <div class="col-2">
-      <button *ngIf="puntajeJugador < 21 && !sePasaJugador && !manoTerminada" type="button"
+      <button *ngIf="puntajeJugador < 21 && !manoTerminada" type="button"
         class="btn btn-warning btn-sm" (click)="obtenerCartaJugador()">Pedir Carta</button>
     </div>
     <div class="col-2">
-      <button *ngIf="!blackJack && !sePasaJugador && !manoTerminada" type="button" class="btn btn-warning btn-sm"
+      <button *ngIf="!manoTerminada" type="button" class="btn btn-warning btn-sm"
         (click)="terminarJugada()">Plantarse</button>
     </div>
     <div class="col-2">
@@ -22,7 +22,7 @@
         <div class="col-2">
           <h6 class="fst-italic text-white">Puntaje Crupier: {{mostrarPuntajeCrupier}}</h6>
         </div>
-        <div class="col-10">
+        <div class="col-6">
           <app-blackjack-cartas [carta]=carta *ngFor="let carta of crupier"></app-blackjack-cartas>
         </div>
       </div>
@@ -31,7 +31,7 @@
         <div class="col-2">
           <h6 class="fst-italic text-white">Puntaje Jugador: {{mostrarPuntajeJugador}}</h6>
         </div>
-        <div class="col-10">
+        <div class="col-6">
           <app-blackjack-cartas [carta]=carta *ngFor="let carta of jugador"></app-blackjack-cartas>
         </div>
       </div>

@@ -2,17 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Carta } from '../models/carta';
+import { CartasSinJugar } from '../models/cartasSinJugar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartaService {
- 
-  private URL: string ="https://632b55121090510116d6fac2.mockapi.io/cartas/";
+
+  private URLAPI: string = "https://localhost:7274/api/";
 
   constructor(private http: HttpClient) { }
 
-  obtenerCarta(): Observable <Carta[]> {
-    return this.http.get<Carta[]>(this.URL);
-    }
+  obtenerCarta(): Observable<Carta[]> {
+    return this.http.get<Carta[]>(this.URLAPI + "Carta");
+  } 
+
+
 }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
-import { CartaService } from 'src/app/services/carta.service';
+import { CartaService } from 'src/app/services/cartas.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -43,9 +43,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartaService.obtenerCarta().subscribe({
         next: (carta: Carta[]) => {
+          console.log(carta)
           this.cartas = carta;
         },
-        error: () => {
+        error: () => {          
           alert('No se pudo obtener carta');
         },
       })

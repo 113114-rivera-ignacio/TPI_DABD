@@ -1,7 +1,6 @@
 import { Component, EventEmitter,Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
-import { CartaService } from 'src/app/services/carta.service';
 
 @Component({
   selector: 'app-blackjack-cartas',

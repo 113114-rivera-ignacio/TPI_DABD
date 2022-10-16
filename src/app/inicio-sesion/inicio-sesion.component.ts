@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Usuario } from '../models/usuario';
 import { UsuarioService } from '../services/usuario.service';
@@ -11,31 +12,38 @@ import { UsuarioService } from '../services/usuario.service';
 export class InicioSesionComponent implements OnInit {
 
   @Output() usuarioLogeado = new EventEmitter<Usuario>();
-  usuario : Usuario;
+  formulario: FormGroup;
+  enviado:boolean=false;
+  
   private suscripcion = new Subscription();
 
-  constructor(private usuarioService : UsuarioService) { }
+  constructor(private usuarioService : UsuarioService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.usuario = new Usuario();
-    this.usuario.usuario= 'noe';
-    this.usuario.pass = '123';
-    this.logear(this.usuario);
+    this.formulario = this.formBuilder.group({
+      usuario: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
-  logear(usuario : Usuario){
-    this.suscripcion.add(
-      this.usuarioService.obtenerUsuario(usuario).subscribe({
-        next: (usuario1: Usuario) =>{
-          console.log(usuario1);
-          this.usuarioLogeado.emit(usuario1);
-          
-        },
-        error:()=>{
-          alert('No se encontro');
-        }
-      })
-    )
+
+  enviar() {
+    this.enviado=true;
+    if (this.formulario.valid) {      
+      this.suscripcion.add(
+        this.usuarioService.obtenerUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.password))
+        .subscribe({
+          next: (usuario1: Usuario) =>{
+            this.usuarioLogeado.emit(usuario1);            
+          },
+          error:()=>{            
+            this.formulario.setErrors({'invalid':true});            
+          }
+        })
+      )
+    } else {
+      console.log('formulario invalido')
+    }
   }
 
 

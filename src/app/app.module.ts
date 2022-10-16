@@ -10,7 +10,13 @@ import { HomeComponent } from './home/home.component';
 import { InicioSesionComponent } from './inicio-sesion/inicio-sesion.component';
 import { BlackjackCartasComponent } from './blackjack/blackjack-cartas/blackjack-cartas.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { AuthGuard } from './guards/auth.guard';
+import { CartaCroupierService } from './services/carta-croupier.service';
+import { CartaJugadorService } from './services/carta-jugador.service';
+import { CartasJugadasService } from './services/cartas-jugadas.service';
+import { CartasSinJugarService } from './services/cartas-sin-jugar.service';
+import { CartaService } from './services/cartas.service';
+import { UsuarioService } from './services/usuario.service';
 
 @NgModule({
   declarations: [
@@ -19,16 +25,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     InicioSesionComponent,
     BlackjackJuegoComponent,
-    BlackjackCartasComponent
+    BlackjackCartasComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    AuthGuard,
+    CartaCroupierService,
+    CartaJugadorService,
+    CartasJugadasService,
+    CartasSinJugarService,
+    CartaService,
+    UsuarioService,
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

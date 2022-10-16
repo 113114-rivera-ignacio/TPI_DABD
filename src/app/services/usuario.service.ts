@@ -9,12 +9,15 @@ import { Usuario } from '../models/usuario';
 export class UsuarioService {
   private isLoggedIn: Subject<boolean>;
   private usuarioLogueado: Subject<Usuario>;
+  public loggedIn: boolean;
 
   private URLAPI: string = 'https://localhost:7274/api/';
 
   constructor(private http: HttpClient) {
     this.isLoggedIn = new Subject<boolean>();
     this.usuarioLogueado = new Subject<Usuario>();
+    this.isLoggedIn.next(false);
+    this.loggedIn=false;
   }
 
   obtenerUsuario(usuario: Usuario): Observable<Usuario> {
@@ -24,6 +27,7 @@ export class UsuarioService {
   loguear(usuario: Usuario) {
     this.usuarioLogueado.next(usuario);
     this.isLoggedIn.next(true);
+    this.loggedIn=true;
   }
 
   desloguear() {

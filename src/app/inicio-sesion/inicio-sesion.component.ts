@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Usuario } from '../models/usuario';
 import { UsuarioService } from '../services/usuario.service';
@@ -17,7 +18,7 @@ export class InicioSesionComponent implements OnInit {
   
   private suscripcion = new Subscription();
 
-  constructor(private usuarioService : UsuarioService, private formBuilder: FormBuilder) { }
+  constructor(private usuarioService : UsuarioService, private formBuilder: FormBuilder, private router:Router) { }
 
   ngOnInit(): void {
     this.formulario = this.formBuilder.group({
@@ -34,7 +35,8 @@ export class InicioSesionComponent implements OnInit {
         this.usuarioService.obtenerUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.password))
         .subscribe({
           next: (usuario1: Usuario) =>{
-            this.usuarioLogeado.emit(usuario1);            
+            this.usuarioLogeado.emit(usuario1);
+            this.router.navigate(['/juego']);
           },
           error:()=>{            
             this.formulario.setErrors({'invalid':true});            

@@ -17,6 +17,7 @@ import { CartasJugadasService } from './services/cartas-jugadas.service';
 import { CartasSinJugarService } from './services/cartas-sin-jugar.service';
 import { CartaService } from './services/cartas.service';
 import { UsuarioService } from './services/usuario.service';
+import { RegistrarComponent } from './registrar/registrar.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UsuarioService } from './services/usuario.service';
     InicioSesionComponent,
     BlackjackJuegoComponent,
     BlackjackCartasComponent,
+    RegistrarComponent,
   ],
   imports: [
     BrowserModule,

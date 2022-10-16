@@ -10,7 +10,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-xl-4 mx-3 text center">
-                            <h2 class="fw-bold-md-4 pb-2">Iniciar Sesión</h2>
+                            <h2 class="fw-bold-md-4 pb-2">Registrarse</h2>
                             <form [formGroup]="formulario">
                             <div class="form-outline mb-3">
                                 <label for="typeUsuario" class="form-label">Usuario</label>
@@ -20,6 +20,7 @@
                               <span>Ingrese un usuario</span>
                             </div>
                             </div>
+                            <div formGroupName="passwords">
                             <div class="form-outline mb-4">
                                 <label for="typePassword" class="form-label">Contraseña</label>
                                 <input type="password" id="typePassword" class="form-control form-control-lg" formControlName="password">
@@ -28,17 +29,26 @@
                               <span>Ingrese una contraseña</span>
                             </div>
                             </div>
-                            <div class="text-danger"
-                            *ngIf="formulario.invalid && enviado" >    
-                                <span>Usuario y/o contraseña incorrecto!</span>
+                            <div class="form-outline mb-4">
+                                <label for="typeConfirmPassword" class="form-label">Confirmar contraseña</label>
+                                <input type="password" id="typeConfirmPassword" class="form-control form-control-lg" formControlName="confirmPassword">
+                                <div class="text-danger"
+                                *ngIf="formulario.get('confirmPassword')?.hasError('required') && formulario.get('confirmPassword')?.touched" >    
+                              <span>Ingrese una contraseña</span>
                             </div>
 
+
+                            <div class="text-danger"  *ngIf="formulario.get('passwords')?.hasError('pepe') && formulario.get('passwords')?.get('password')?.touched && formulario.get('passwords')?.get('confirmPassword')?.touched">
+                                <span>Las contraseñas no coinciden</span>
+                        </div>
+                        
+                        
+                        </div>
+                        </div>
+                            
                             <div class="text-center">
-                                <button class="btn btn-info btn-block btn-lg" (click)="enviar()">Ingresar</button>
+                                <button class="btn btn-info btn-block btn-lg" (click)="enviar()">Aceptar</button>
                                 <!-- <p class="small mt-3 mb-4 text-muted">Olvidaste tu <span class="fw-bold"><a href="#!" class="text-muted">Email</a> / <a href="#!" class="text-muted">Contraseña</a></span></p> -->
-                            </div>
-                            <div class="text-center">                                
-                                <a class="link-info" routerLink="/signup">Registrarse</a>
                             </div>
                         </form>
                         </div>

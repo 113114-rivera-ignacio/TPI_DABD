@@ -40,4 +40,8 @@ export class UsuarioService {
   usuarioLogin(): Observable<Usuario> {
     return this.usuarioLogueado.asObservable();
   }
+
+  crearUsuario(usuario: Usuario): Observable<Usuario> {
+    return this.http.post<Usuario>(this.URLAPI + 'Usuario', usuario);
+  }
 }

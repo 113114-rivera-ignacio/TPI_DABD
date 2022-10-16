@@ -12,7 +12,7 @@ import { UsuarioService } from '../services/usuario.service';
 })
 export class InicioSesionComponent implements OnInit {
 
-  @Output() usuarioLogeado = new EventEmitter<Usuario>();
+  //@Output() usuarioLogeado = new EventEmitter<Usuario>();
   formulario: FormGroup;
   enviado:boolean=false;
   
@@ -34,8 +34,9 @@ export class InicioSesionComponent implements OnInit {
       this.suscripcion.add(
         this.usuarioService.obtenerUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.password))
         .subscribe({
-          next: (usuario1: Usuario) =>{
-            this.usuarioLogeado.emit(usuario1);
+          next: (usuario: Usuario) =>{
+           // this.usuarioLogeado.emit(usuario);
+            this.usuarioService.loguear(usuario);
             this.router.navigate(['/juego']);
           },
           error:()=>{            

@@ -19,8 +19,12 @@ export class CartasSinJugarService {
     return this.http.get<Carta[]>(this.URLAPI + "CartasSinJugar/" + idUsuario);
   }
 
-  eliminarCartasSinJugar(idUsuario: number): Observable<Carta> {
-    return this.http.delete<Carta>(this.URLAPI + "CartasSinJugar/" + idUsuario);
+  eliminarTodasCartasSinJugar(idUsuario: number): Observable<Carta> {
+    return this.http.delete<Carta>(this.URLAPI + "CartasSinJugar/" +"BorrarTodo/"+ idUsuario);
+  }
+
+  eliminarCartaSinJugar(idUsuario: number, idCarta: string): Observable<Carta> {
+    return this.http.delete<Carta>(this.URLAPI + "CartasSinJugar/" + idUsuario+"?idCarta="+idCarta);
   }
 
   agregarCartaSinJugar(cartasSinJugar: CartasConId): Observable<CartasConId> {

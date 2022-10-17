@@ -22,7 +22,7 @@ export class CartaCroupierService {
     return this.http.get<Carta[]>(this.URLAPI + "CartasCroupier/");
   }
 
-  eliminarCartasCroupier(idUsuario: number): Observable<Carta> {
+  eliminarCartaCroupier(idUsuario: number): Observable<Carta> {
     return this.http.delete<Carta>(this.URLAPI + "CartasCroupier/" + idUsuario);
   }
 

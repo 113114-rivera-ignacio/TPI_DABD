@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { Usuario } from './models/usuario';
 import { UsuarioService } from './services/usuario.service';
 
@@ -11,7 +12,7 @@ import { UsuarioService } from './services/usuario.service';
 export class AppComponent implements OnInit {
   title = '21blackjack';
   isLoggedIn = false;
-  usuario:Usuario;
+  usuario: Usuario;
 
   constructor(private router: Router, private usuarioService: UsuarioService) {}
   ngOnInit(): void {
@@ -26,8 +27,6 @@ export class AppComponent implements OnInit {
         this.usuario=usuario;
       },
     });
-
-
   }
 
   logout() {

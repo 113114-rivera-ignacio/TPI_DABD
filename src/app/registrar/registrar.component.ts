@@ -43,7 +43,7 @@ export class RegistrarComponent implements OnInit {
   enviar() {
     if (this.formulario.valid) {      
       this.suscripcion.add(
-        this.usuarioService.crearUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.password))
+        this.usuarioService.crearUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.passwords.password))
         .subscribe({
           next: (usuario: Usuario) =>{
             this.usuarioService.loguear(usuario);

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CartaJugador } from '../models/cartaJugador';
+import { Carta } from '../models/carta';
+import { CartasConId } from '../models/cartasConId';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +13,16 @@ export class CartaJugadorService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerCartaCroupier(idUsuario: number): Observable<CartaJugador[]> {
-    return this.http.get<CartaJugador[]>(this.URLAPI + "CartaJugador/" + idUsuario);
+  obtenerCartaJugador(idUsuario: number): Observable<Carta[]> {
+    return this.http.get<Carta[]>(this.URLAPI + "CartaJugador/" + idUsuario);
   }
 
-  eliminarCartasCroupier(idUsuario: number): Observable<CartaJugador> {
-    return this.http.delete<CartaJugador>(this.URLAPI + "CartaJugador/" + idUsuario);
+  eliminarCartasJugador(idUsuario: number): Observable<Carta> {
+    return this.http.delete<Carta>(this.URLAPI + "CartaJugador/" + idUsuario);
   }
 
-  agregarCartaCroupier(cartaJugador: CartaJugador): Observable<CartaJugador> {
-    return this.http.post<CartaJugador>(this.URLAPI + "/CartaJugador", cartaJugador);
+  agregarCartaJugador(cartaJugador: CartasConId): Observable<CartasConId> {
+    return this.http.post<CartasConId>(this.URLAPI + "CartaJugador/", cartaJugador);
   }
 
 

@@ -23,7 +23,7 @@
           <h6 class="fst-italic text-white">Puntaje Crupier: {{mostrarPuntajeCrupier}}</h6>
         </div>
         <div class="col-6">
-          <app-blackjack-cartas [carta]=carta *ngFor="let carta of crupier"></app-blackjack-cartas>
+          <app-blackjack-cartas [carta]=carta *ngFor="let carta of cartasCrupier"></app-blackjack-cartas>
         </div>
       </div>
 
@@ -32,7 +32,7 @@
           <h6 class="fst-italic text-white">Puntaje Jugador: {{mostrarPuntajeJugador}}</h6>
         </div>
         <div class="col-6">
-          <app-blackjack-cartas [carta]=carta *ngFor="let carta of jugador"></app-blackjack-cartas>
+          <app-blackjack-cartas [carta]=carta *ngFor="let carta of cartasJugador"></app-blackjack-cartas>
         </div>
       </div>
       <br>
@@ -47,6 +47,6 @@
           <h6 class="fst-italic text-white">Cartas en mazo: {{cartas.length}}</h6>
         </div>
       </div>
-
+      <button (click)="prueba()">Prueba</button>
     </div>
   </div>

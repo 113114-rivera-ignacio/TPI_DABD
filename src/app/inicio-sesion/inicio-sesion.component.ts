@@ -37,7 +37,9 @@ export class InicioSesionComponent implements OnInit {
           next: (usuario: Usuario) =>{
            // this.usuarioLogeado.emit(usuario);
             this.usuarioService.loguear(usuario);
-            this.router.navigate(['/juego']);
+            this.usuarioService.cambiarEstado(2);
+            this.cambiarComponente(usuario.idUsuario);
+            //this.router.navigate(['/juego']);
           },
           error:()=>{            
             this.formulario.setErrors({'invalid':true});            
@@ -47,6 +49,10 @@ export class InicioSesionComponent implements OnInit {
     } else {
       console.log('formulario invalido')
     }
+  }
+
+  cambiarComponente(id : number){
+    this.router.navigate(['/juego',id])
   }
 
 

@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Usuario } from '../models/usuario';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
+  private estadoSubject : Subject<number>;  
+  private estadoBehaviorSubject : BehaviorSubject<number>;
+  
+
   private isLoggedIn: Subject<boolean>;
   private usuarioLogueado: Subject<Usuario>;
   public loggedIn: boolean;
@@ -18,6 +22,17 @@ export class UsuarioService {
     this.usuarioLogueado = new Subject<Usuario>();
     this.isLoggedIn.next(false);
     this.loggedIn=false;
+
+    this.estadoSubject = new Subject<number>();        
+  }
+
+
+  cambiarEstado(valor: number){
+    this.estadoSubject.next(valor);
+  } 
+
+  estadoCambio():Observable<number>{
+    return this.estadoSubject.asObservable();
   }
 
   obtenerUsuario(usuario: Usuario): Observable<Usuario> {
@@ -37,6 +52,7 @@ export class UsuarioService {
   estadoLogueo(): Observable<boolean> {
     return this.isLoggedIn.asObservable();
   }
+  
   usuarioLogin(): Observable<Usuario> {
     return this.usuarioLogueado.asObservable();
   }

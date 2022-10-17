@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Carta } from '../models/carta';
-import { CartaCroupier } from '../models/cartaCroupier';
+import { CartasConId } from '../models/cartasConId';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,20 @@ export class CartaCroupierService {
 
   constructor(private http: HttpClient) { }
 
-  obtenerCartaCroupier(idUsuario: number): Observable<CartaCroupier[]> {
-    return this.http.get<CartaCroupier[]>(this.URLAPI + "CartasCroupier/" + idUsuario);
+  obtenerCartaCroupier(idUsuario: number): Observable<Carta[]> {
+    return this.http.get<Carta[]>(this.URLAPI + "CartasCroupier/" + idUsuario);
   }
 
-  eliminarCartasCroupier(idUsuario: number): Observable<CartaCroupier> {
-    return this.http.delete<CartaCroupier>(this.URLAPI + "CartasCroupier/" + idUsuario);
+  obtenerCartaCroupierTodas(): Observable<Carta[]> {
+    return this.http.get<Carta[]>(this.URLAPI + "CartasCroupier/");
   }
 
-  agregarCartaCroupier(cartaCroupier: CartaCroupier): Observable<CartaCroupier> {
-    return this.http.post<CartaCroupier>(this.URLAPI + "/CartasCroupier", cartaCroupier);
+  eliminarCartasCroupier(idUsuario: number): Observable<Carta> {
+    return this.http.delete<Carta>(this.URLAPI + "CartasCroupier/" + idUsuario);
+  }
+
+  agregarCartaCroupier(cartaCroupier: CartasConId): Observable<CartasConId> {
+    return this.http.post<CartasConId>(this.URLAPI + "CartasCroupier/", cartaCroupier);
   }
 
 

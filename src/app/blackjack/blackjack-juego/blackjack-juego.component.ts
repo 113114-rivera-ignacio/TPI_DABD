@@ -50,7 +50,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private usuarioService: UsuarioService) { }
 
-  ngOnDestroy(): void {    
+  ngOnDestroy(): void {
     this.suscripcion.unsubscribe();
     this.volverAJugar = true;
     this.volverAJugarMano = true;
@@ -63,7 +63,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.cartasCrupier = [];
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.cargarUsuarioId();
     this.obtenerCartasSinJugar();
     this.obtenerCartasCroupier();
@@ -71,10 +71,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.obtenerCartasJugadas();
   }
 
-  public cargarUsuarioId() {    
+  public cargarUsuarioId() {
     this.suscripcion.add(
       this.usuarioService.obtenerUsuarioID().subscribe({
-        next: (id: number) =>{
+        next: (id: number) => {
           this.usuarioID = id;
         }
       })
@@ -211,6 +211,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
           alert("Error al eliminar cartas sin jugar");
         },
       }));
+
   }
 
   public InsertarCartasSinJugar() {
@@ -238,13 +239,14 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
 
   public eliminarCartasJugadas() {
+    this.cartasJugadas = [];
     this.suscripcion.add(
-      this.cartasJugadasService.eliminarCartasJugadas(this.usuarioID).subscribe({
+      this.cartasJugadasService.eliminarTodasCartasJugadas(this.usuarioID).subscribe({
         next: () => {
           console.log('cartas jugadas eliminadas');
         },
         error: () => {
-          alert('error al obtener las cartas jugadas');
+          alert("Error al eliminar cartas jugadas");
         },
       }));
   }
@@ -325,6 +327,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.eliminarTodasCartasSinJugar();
+        this.eliminarCartasJugadas()
         this.obtenerCartasSinJugar();
       }
     });

@@ -22,6 +22,10 @@ export class CartasJugadasService {
     return this.http.delete<Carta>(this.URLAPI + "CartasJugadas/" + idUsuario);
   }
 
+  eliminarTodasCartasJugadas(idUsuario: number): Observable<Carta> {
+    return this.http.delete<Carta>(this.URLAPI + "CartasJugadas/" +"BorrarTodo/"+ idUsuario);
+  }
+
   agregarCartasJugadas(cartasJugadas: CartasConId): Observable<CartasConId> {
     return this.http.post<CartasConId>(this.URLAPI + "CartasJugadas/", cartasJugadas);
   }

@@ -1,10 +1,12 @@
 <nav id="navbar" class="navbar navbar-expand-lg bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" aria-current="page" routerLink="home"><img src="https://github.com/Noe1129/Imagenes_blackjack/blob/main/logo.png?raw=true" alt="" id="img"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" aria-current="page" routerLink="home"><img
+        src="https://github.com/Noe1129/Imagenes_blackjack/blob/main/logo.png?raw=true" alt="logo" id="img"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse navbarNav" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link active text-white" routerLink="home">Home</a>
@@ -13,23 +15,24 @@
           <a class="nav-link active text-white" routerLink="juego">Jugar</a>
         </li>
       </ul>
-      <ul class="navbar-nav d-flex">
+    </div>
+    <div class="collapse navbar-collapse justify-content-end navbarNav">
+      <ul class="navbar-nav">
         <li *ngIf="isLoggedIn" class="nav-item dropdown mr-3">
           <a class="nav-link text-white">
             <i class="fas fa-user"></i> Bienvenido {{ usuario.usuario }}
           </a>
         </li>
         <li *ngIf="isLoggedIn" class="nav-item">
-            <a style="cursor: pointer" class="nav-link text-white" (click)="logout()">Salir</a>
-          </li> 
-          <i class=></i>
+          <a style="cursor: pointer" class="nav-link text-white" (click)="logout()">Salir</a>
+        </li>
+        <i class=></i>
       </ul>
-  
     </div>
+
   </div>
 </nav>
 
 <div class="container-fluid p-0" id="fondo">
   <router-outlet></router-outlet>
 </div>
-

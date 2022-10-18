@@ -27,7 +27,6 @@ export class InicioSesionComponent implements OnInit {
     });
   }
 
-
   enviar() {
     this.enviado=true;
     if (this.formulario.valid) {      
@@ -35,11 +34,10 @@ export class InicioSesionComponent implements OnInit {
         this.usuarioService.obtenerUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.password))
         .subscribe({
           next: (usuario: Usuario) =>{
-           // this.usuarioLogeado.emit(usuario);
+            this.usuarioService.darUsuarioID(usuario.idUsuario);           
             this.usuarioService.loguear(usuario);
             this.usuarioService.cambiarEstado(2);
-            this.cambiarComponente(usuario.idUsuario);
-            //this.router.navigate(['/juego']);
+            this.router.navigate(['/juego']);
           },
           error:()=>{            
             this.formulario.setErrors({'invalid':true});            
@@ -50,11 +48,4 @@ export class InicioSesionComponent implements OnInit {
       console.log('formulario invalido')
     }
   }
-
-  cambiarComponente(id : number){
-    this.router.navigate(['/juego',id])
-  }
-
-
-
 }

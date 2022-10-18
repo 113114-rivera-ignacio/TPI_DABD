@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, SimpleChange } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Usuario } from '../models/usuario';
 
@@ -8,7 +8,7 @@ import { Usuario } from '../models/usuario';
 })
 export class UsuarioService {
   private estadoSubject : Subject<number>;  
-  private estadoBehaviorSubject : BehaviorSubject<number>;
+  private usuarioID : BehaviorSubject<number>;
   
 
   private isLoggedIn: Subject<boolean>;
@@ -22,9 +22,17 @@ export class UsuarioService {
     this.usuarioLogueado = new Subject<Usuario>();
     this.isLoggedIn.next(false);
     this.loggedIn=false;
-    this.estadoSubject = new Subject<number>();        
+    this.estadoSubject = new Subject<number>();  
+    this.usuarioID = new BehaviorSubject<number>(-1);   
   }
 
+  obtenerUsuarioID(): Observable<number>{
+    return this.usuarioID.asObservable();
+  }
+
+  darUsuarioID(id: number){
+    this.usuarioID.next(id);
+  }
 
   cambiarEstado(valor: number){
     this.estadoSubject.next(valor);

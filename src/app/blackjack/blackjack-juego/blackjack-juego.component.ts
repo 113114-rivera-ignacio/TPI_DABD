@@ -1,13 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
 import { CartasConId } from 'src/app/models/cartasConId';
+import { Usuario } from 'src/app/models/usuario';
 import { CartaCroupierService } from 'src/app/services/carta-croupier.service';
 import { CartaJugadorService } from 'src/app/services/carta-jugador.service';
 import { CartasJugadasService } from 'src/app/services/cartas-jugadas.service';
 import { CartasSinJugarService } from 'src/app/services/cartas-sin-jugar.service';
 import { CartaService } from 'src/app/services/cartas.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -45,9 +47,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     private cartaJugadorService: CartaJugadorService,
     private cartasJugadasService: CartasJugadasService,
     private cartasSinJugarService: CartasSinJugarService,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private usuarioService: UsuarioService) { }
 
-  ngOnDestroy(): void {
+  ngOnDestroy(): void {    
     this.suscripcion.unsubscribe();
     this.volverAJugar = true;
     this.volverAJugarMano = true;
@@ -60,7 +63,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.cartasCrupier = [];
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.cargarUsuarioId();
     this.obtenerCartasSinJugar();
     this.obtenerCartasCroupier();
@@ -68,14 +71,14 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.obtenerCartasJugadas();
   }
 
-  public cargarUsuarioId() {
+  public cargarUsuarioId() {    
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          this.usuarioID = params['id'];
+      this.usuarioService.obtenerUsuarioID().subscribe({
+        next: (id: number) =>{
+          this.usuarioID = id;
         }
-      }
-      ));
+      })
+    )
   }
 
   // -----------------------------------------------------------------

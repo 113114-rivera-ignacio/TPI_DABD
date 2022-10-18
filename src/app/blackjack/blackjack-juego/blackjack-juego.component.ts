@@ -1,17 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
-
 import { CartasConId } from 'src/app/models/cartasConId';
-
-import { Usuario } from 'src/app/models/usuario';
 import { CartaCroupierService } from 'src/app/services/carta-croupier.service';
 import { CartaJugadorService } from 'src/app/services/carta-jugador.service';
 import { CartasJugadasService } from 'src/app/services/cartas-jugadas.service';
 import { CartasSinJugarService } from 'src/app/services/cartas-sin-jugar.service';
 import { CartaService } from 'src/app/services/cartas.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -22,9 +18,7 @@ import Swal from 'sweetalert2';
 
 export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   //$valorObservable : Observable<number>
-
-
-  cartas: Carta[];
+  //cartas: Carta[];
 
   cartasJugadas: Carta[] = [];
   cartasSinJugar: Carta[] = [];
@@ -42,7 +36,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   volverAJugarMano: boolean = true;
 
   usuarioID: number;
-  
+
   private suscripcion = new Subscription();
 
 
@@ -51,237 +45,215 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     private cartaJugadorService: CartaJugadorService,
     private cartasJugadasService: CartasJugadasService,
     private cartasSinJugarService: CartasSinJugarService,
-    private usuarioService: UsuarioService,
-    private route: Router,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnDestroy(): void {
     this.suscripcion.unsubscribe();
+    this.volverAJugar = true;
+    this.volverAJugarMano = true;
+    this.manoTerminada = true;
+    this.puntajeJugador = 0;
+    this.mostrarPuntajeJugador = "0";
+    this.mostrarPuntajeCrupier = 0;
+    this.puntajeCrupier = 0;
   }
 
   ngOnInit(): void {
-    this.obtenerCartasCroupier();
-    this.obtenerMazo();
-    this.obtenerCartasJugador();
+    this.cargarUsuarioId();
     this.obtenerCartasSinJugar();
+    this.obtenerCartasCroupier();    
+    this.obtenerCartasJugador();
     this.obtenerCartasJugadas();
   }
+
+  public cargarUsuarioId() {
+    this.suscripcion.add(
+      this.activatedRoute.params.subscribe({
+        next: (params) => {
+          this.usuarioID = params['id'];
+        }
+      }
+      ));
+  }
+
   // -----------------------------------------------------------------
-  //METODOS CROUPIER
+  // Metodos CROUPIER
   private obtenerCartasCroupier() {
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartaCroupierService.obtenerCartaCroupier(id).subscribe({
-            next: (respuesta: Carta[]) => {
-              this.cartasCrupier = respuesta;
-              this.usuarioID = id;
-              console.log(respuesta)
-            },
-            error: () => {
-              alert('error al obtener las cartas del croupier');
-            },
+      this.cartaCroupierService.obtenerCartaCroupier(this.usuarioID).subscribe({
+        next: (respuesta: Carta[]) => {
+          this.cartasCrupier = respuesta;
+          this.cartasCrupier.forEach(carta => {
+            this.puntajeJugador = this.calcularPuntaje(
+              carta,
+              this.puntajeCrupier,
+              this.cartasCrupier
+            );
           });
+          this.mostrarCrupier();                    
+          console.log(respuesta);
         },
-      })
-    );
-  }
+        error: () => {
+          alert('Sin cartas Croupier');
+        },
+      }));
+  } 
+
   public eliminarCartasCroupier() {
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartaCroupierService.eliminarCartaCroupier(id).subscribe({
-            next: () => {
-              console.log('cartas croupier eliminadas');
-            },
-            error: () => {
-              alert('error al obtener la carta');
-            },
-          });
+      this.cartaCroupierService.eliminarCartaCroupier(this.usuarioID).subscribe({
+        next: () => {
+          console.log("Cartas del croupier eliminadas");
         },
-      })
-    );
+        error: () => {
+          alert("Error al eliminar cartas del croupier");
+        },
+      }));
   }
 
-  eliminarcarta(id: number, carta: Carta){
-    carta.id
-  }
-  //Metodos JUGADOR
+  // Metodos JUGADOR
   private obtenerCartasJugador() {
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartaJugadorService.obtenerCartaJugador(id).subscribe({
-            next: (respuesta: Carta[]) => {
-              this.cartasJugador = respuesta;
-              console.log(respuesta)
-            },
-            error: () => {
-              alert('error al obtener las cartas del jugador');
-            },
+      this.cartaJugadorService.obtenerCartaJugador(this.usuarioID).subscribe({
+        next: (respuesta: Carta[]) => {
+          this.cartasJugador = respuesta;
+          this.cartasJugador.forEach(carta => {
+            this.puntajeJugador = this.calcularPuntaje(
+              carta,
+              this.puntajeJugador,
+              this.cartasJugador
+            );            
           });
+          if (this.cartasJugador.some((obj: Carta) => { return obj.valor === 11; })) {
+            this.mostrarPuntajeJugador = this.puntajeJugador - 10 + '/' + this.puntajeJugador;
+          } else {
+            this.mostrarPuntajeJugador = this.puntajeJugador.toString();
+          }
+          console.log(respuesta)
         },
-      })
-    );
-  }
-  public eliminarCartasJugador() {
-    this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartaJugadorService.eliminarCartasJugador(id).subscribe({
-            next: () => {
-              console.log('cartas jugador eliminadas');
-            },
-            error: () => {
-              alert('error al obtener la carta del jugador');
-            },
-          });
+        error: () => {
+          alert('Sin cartas Jugador');
         },
-      })
-    );
+      }));
   }
 
-  //Metodos Cartas sin jugar
-  private obtenerCartasSinJugar() {
+  public eliminarCartasJugador() {
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartasSinJugarService.obtenerCartaSinJugar(id).subscribe({
-            next: (respuesta: Carta[]) => {
-              this.cartasSinJugar = respuesta;
-              console.log(respuesta)
-            },
-            error: () => {
-              alert('error al obtener las cartas sin jugar');
-            },
-          });
+      this.cartaJugadorService.eliminarCartasJugador(this.usuarioID).subscribe({
+        next: () => {
+          console.log('Cartas del jugador eliminadas');
         },
+        error: () => {
+          alert("Error al eliminar cartas del jugador");
+        },
+      }));
+  }
+
+  // Metodos SIN JUGAR
+  obtenerCartasSinJugar() {
+    this.suscripcion.add(
+      this.cartasSinJugarService.obtenerCartaSinJugar(this.usuarioID).subscribe({
+        next: (respuesta: Carta[]) => {
+          if(respuesta.length > 0){
+            this.cartasSinJugar = respuesta;
+            console.log(respuesta);
+          }
+          else{
+            this.suscripcion.add(
+              this.cartaService.obtenerCarta().subscribe({
+                next: (respuesta: Carta[]) => {
+                  this.cartasSinJugar = respuesta;
+                  this.InsertarCartasSinJugar();
+                },
+                error: () => {
+                  alert('No se pudo cargar mazo.');
+                }
+              })
+            );
+          }
+        },
+        error: () => {       
+        }
       })
     );
   }
 
   public eliminarCartaSinJugar(idUsuario: number, carta: Carta) {
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartasSinJugarService.eliminarCartaSinJugar(idUsuario,'13').subscribe({
-            next: () => {
-              console.log('cartas sin jugar eliminadas');
-            },
-            error: () => {
-              alert('error al obtener las cartas sin jugar');
-            },
-          });
+      this.cartasSinJugarService.eliminarCartaSinJugar(idUsuario, carta.id).subscribe({
+        next: () => {
+          console.log('cartas sin jugar eliminadas');
         },
-      })
-    );
+        error: () => {
+          alert("Error al eliminar carta");
+        },
+      }));
   }
 
   public eliminarTodasCartasSinJugar() {
+    this.cartasSinJugar = [];
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartasSinJugarService.eliminarTodasCartasSinJugar(id).subscribe({
-            next: () => {
-              console.log('cartas sin jugar eliminadas');
-            },
-            error: () => {
-              alert('error al obtener las cartas sin jugar');
-            },
-          });
+      this.cartasSinJugarService.eliminarTodasCartasSinJugar(this.usuarioID).subscribe({
+        next: () => {
+          console.log('cartas sin jugar eliminadas');
         },
-      })
-    );
+        error: () => {
+          alert("Error al eliminar cartas sin jugar");
+        },
+      }));
   }
 
   public InsertarCartasSinJugar() {
-    this.cartas.forEach(element => {
+    this.cartasSinJugar.forEach(element => {
       this.cartasSinJugarService.agregarCartaSinJugar(new CartasConId(element.id, this.usuarioID))
         .subscribe({
           next: () => {
-            //console.log(this.obtenerCartasSinJugar());
           }
         });
     });
   }
 
-  //Metodos Cartas Jugadas
+  //Metodos Jugadas
   private obtenerCartasJugadas() {
     this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartasJugadasService.obtenerCartasJugadas(id).subscribe({
-            next: (respuesta: Carta[]) => {
-              this.cartasJugadas = respuesta;
-              console.log(respuesta)
-            },
-            error: () => {
-              alert('error al obtener las cartas jugadas');
-            },
-          });
-        },
-      })
-    );
-  }
-  public eliminarCartasJugadas() {
-    this.suscripcion.add(
-      this.activatedRoute.params.subscribe({
-        next: (params) => {
-          const id = params['id'];
-          this.cartasJugadasService.eliminarCartasJugadas(id).subscribe({
-            next: () => {
-              console.log('cartas jugadas eliminadas');
-            },
-            error: () => {
-              alert('error al obtener las cartas jugadas');
-            },
-          });
-        },
-      })
-    );
-  }
-
-
-  prueba() {
-    // this.eliminarCartasCroupier();
-    // this.eliminarCartasJugador();
-    this.eliminarCartaSinJugar(this.usuarioID,this.cartas[0]);
-    // this.eliminarCartasJugadas();
-  }
-  // ---------------------------------------------------------------
-  obtenerMazo() {
-    this.suscripcion.add(
-      this.cartaService.obtenerCarta().subscribe({
-        next: (carta: Carta[]) => {
-          console.log(carta)
-          this.cartas = carta;
-          this.InsertarCartasSinJugar();
+      this.cartasJugadasService.obtenerCartasJugadas(this.usuarioID).subscribe({
+        next: (respuesta: Carta[]) => {
+          this.cartasJugadas = respuesta;
+          console.log(respuesta)
         },
         error: () => {
-          alert('No se pudo obtener carta');
+          alert('error al obtener las cartas jugadas');
         },
-      })
-    );
+      }));
   }
 
+  public eliminarCartasJugadas() {
+    this.suscripcion.add(
+      this.cartasJugadasService.eliminarCartasJugadas(this.usuarioID).subscribe({
+        next: () => {
+          console.log('cartas jugadas eliminadas');
+        },
+        error: () => {
+          alert('error al obtener las cartas jugadas');
+        },
+      }));
+  }
+  // -----------------------------------------------------------------
+
   obtenerCartaJugador() {
-    const random = Math.floor(Math.random() * this.cartas.length);
-    this.cartasJugador.push(this.cartas[random]);
+    const random = Math.floor(Math.random() * this.cartasSinJugar.length);
+    this.cartasJugador.push(this.cartasSinJugar[random]);
+    this.cartaJugadorService.agregarCartaJugador(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    
     this.puntajeJugador = this.calcularPuntaje(
-      this.cartas[random],
+      this.cartasSinJugar[random],
       this.puntajeJugador,
       this.cartasJugador
     );
-    this.eliminarCartaSinJugar(this.usuarioID,this.cartas[random])
-    this.cartas.splice(random, 1);
+
+    this.cartasJugadasService.agregarCartasJugadas(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    this.eliminarCartaSinJugar(this.usuarioID, this.cartasSinJugar[random]);
+    this.cartasSinJugar.splice(random, 1);
 
     if (this.cartasJugador.some((obj: Carta) => { return obj.valor === 11; })) {
       this.mostrarPuntajeJugador = this.puntajeJugador - 10 + '/' + this.puntajeJugador;
@@ -298,14 +270,17 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
 
   obtenerCartaCrupier() {
-    const random = Math.floor(Math.random() * this.cartas.length);
-    this.cartasCrupier.push(this.cartas[random]);
+    const random = Math.floor(Math.random() * this.cartasSinJugar.length);    
+    this.cartasCrupier.push(this.cartasSinJugar[random]);
+    this.cartaCroupierService.agregarCartaCroupier(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
     this.puntajeCrupier = this.calcularPuntaje(
-      this.cartas[random],
+      this.cartasSinJugar[random],
       this.puntajeCrupier,
       this.cartasCrupier
     );
-    this.cartas.splice(random, 1);
+    this.cartasJugadasService.agregarCartasJugadas(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    this.eliminarCartaSinJugar(this.usuarioID, this.cartasSinJugar[random]);
+    this.cartasSinJugar.splice(random, 1);
   }
 
   calcularPuntaje(carta: Carta, puntaje: number, listaCartas: Carta[]): number {
@@ -339,13 +314,14 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Si, mezclar!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.obtenerMazo();
+        this.eliminarTodasCartasSinJugar();
+        this.obtenerCartasSinJugar();
       }
     });
   }
 
   jugarMano() {
-    if (this.cartas.length < 20) {
+    if (this.cartasSinJugar.length < 20) {
       this.mensajeMezclar();
     } else {
 
@@ -364,7 +340,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
         this.mostrarCrupier();
 
         if (this.puntajeCrupier == 21) {
-          this.mostrarMensaje(0);
+          this.mostrarMensaje(0);          
           return;
         }
 
@@ -443,6 +419,8 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
         this.mostrarMensajeGano("BlackJack!!!");
         break;
     }
+    this.cartaJugadorService.eliminarCartasJugador(this.usuarioID).subscribe({});
+    this.cartaCroupierService.eliminarCartaCroupier(this.usuarioID).subscribe({});
   }
 
   limpiarMesa() {

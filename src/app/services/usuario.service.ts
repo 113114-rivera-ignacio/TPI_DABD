@@ -22,7 +22,6 @@ export class UsuarioService {
     this.usuarioLogueado = new Subject<Usuario>();
     this.isLoggedIn.next(false);
     this.loggedIn=false;
-
     this.estadoSubject = new Subject<number>();        
   }
 

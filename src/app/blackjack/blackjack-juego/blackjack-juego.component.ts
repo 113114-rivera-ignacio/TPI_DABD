@@ -51,17 +51,19 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.unsubscribe();
     this.volverAJugar = true;
     this.volverAJugarMano = true;
-    this.manoTerminada = true;
+    this.manoTerminada = false;
     this.puntajeJugador = 0;
     this.mostrarPuntajeJugador = "0";
     this.mostrarPuntajeCrupier = 0;
     this.puntajeCrupier = 0;
+    this.cartasJugador = [];
+    this.cartasCrupier = [];
   }
 
   ngOnInit(): void {
     this.cargarUsuarioId();
     this.obtenerCartasSinJugar();
-    this.obtenerCartasCroupier();    
+    this.obtenerCartasCroupier();
     this.obtenerCartasJugador();
     this.obtenerCartasJugadas();
   }
@@ -82,22 +84,27 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartaCroupierService.obtenerCartaCroupier(this.usuarioID).subscribe({
         next: (respuesta: Carta[]) => {
-          this.cartasCrupier = respuesta;
-          this.cartasCrupier.forEach(carta => {
-            this.puntajeJugador = this.calcularPuntaje(
-              carta,
-              this.puntajeCrupier,
-              this.cartasCrupier
-            );
-          });
-          this.mostrarCrupier();                    
+          if (respuesta.length > 0) {
+            this.manoTerminada = false;
+            this.volverAJugarMano = false;
+            this.cartasCrupier = respuesta;
+            this.cartasCrupier.forEach(carta => {
+              this.puntajeCrupier = this.calcularPuntaje(
+                carta,
+                this.puntajeCrupier,
+                this.cartasCrupier
+              );
+            });
+            this.mostrarCrupier();
+          }
+
           console.log(respuesta);
         },
         error: () => {
           alert('Sin cartas Croupier');
         },
       }));
-  } 
+  }
 
   public eliminarCartasCroupier() {
     this.suscripcion.add(
@@ -122,7 +129,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
               carta,
               this.puntajeJugador,
               this.cartasJugador
-            );            
+            );
           });
           if (this.cartasJugador.some((obj: Carta) => { return obj.valor === 11; })) {
             this.mostrarPuntajeJugador = this.puntajeJugador - 10 + '/' + this.puntajeJugador;
@@ -154,11 +161,11 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartasSinJugarService.obtenerCartaSinJugar(this.usuarioID).subscribe({
         next: (respuesta: Carta[]) => {
-          if(respuesta.length > 0){
+          if (respuesta.length > 0) {
             this.cartasSinJugar = respuesta;
             console.log(respuesta);
           }
-          else{
+          else {
             this.suscripcion.add(
               this.cartaService.obtenerCarta().subscribe({
                 next: (respuesta: Carta[]) => {
@@ -172,7 +179,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
             );
           }
         },
-        error: () => {       
+        error: () => {
         }
       })
     );
@@ -244,7 +251,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     const random = Math.floor(Math.random() * this.cartasSinJugar.length);
     this.cartasJugador.push(this.cartasSinJugar[random]);
     this.cartaJugadorService.agregarCartaJugador(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
-    
+
     this.puntajeJugador = this.calcularPuntaje(
       this.cartasSinJugar[random],
       this.puntajeJugador,
@@ -270,7 +277,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
 
   obtenerCartaCrupier() {
-    const random = Math.floor(Math.random() * this.cartasSinJugar.length);    
+    const random = Math.floor(Math.random() * this.cartasSinJugar.length);
     this.cartasCrupier.push(this.cartasSinJugar[random]);
     this.cartaCroupierService.agregarCartaCroupier(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
     this.puntajeCrupier = this.calcularPuntaje(
@@ -340,7 +347,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
         this.mostrarCrupier();
 
         if (this.puntajeCrupier == 21) {
-          this.mostrarMensaje(0);          
+          this.mostrarMensaje(0);
           return;
         }
 

@@ -34,6 +34,8 @@ export class InicioSesionComponent implements OnInit {
         this.usuarioService.obtenerUsuario(new Usuario(this.formulario.value.usuario, this.formulario.value.password))
         .subscribe({
           next: (usuario: Usuario) =>{
+           // console.log("TOKEN: ",usuario.token);
+            this.usuarioService.setJWTToken(usuario.token);
             this.usuarioService.darUsuarioID(usuario.idUsuario);           
             this.usuarioService.loguear(usuario);
             this.usuarioService.cambiarEstado(2);

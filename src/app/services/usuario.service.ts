@@ -9,11 +9,12 @@ import { Usuario } from '../models/usuario';
 export class UsuarioService {
   private estadoSubject : Subject<number>;  
   private usuarioID : BehaviorSubject<number>;
-  
+  private token:string;
 
   private isLoggedIn: Subject<boolean>;
   private usuarioLogueado: Subject<Usuario>;
   public loggedIn: boolean;
+
 
   private URLAPI: string = 'https://localhost:7274/api/';
 
@@ -53,6 +54,7 @@ export class UsuarioService {
   }
 
   desloguear() {
+    this.token='';
     this.isLoggedIn.next(false);
   }
 
@@ -67,4 +69,11 @@ export class UsuarioService {
   crearUsuario(usuario: Usuario): Observable<Usuario> {
     return this.http.post<Usuario>(this.URLAPI + 'Usuario', usuario);
   }
+  getJWTToken(){
+    return this.token;
+  }
+  setJWTToken(token:string){
+    this.token=token;
+  }
+
 }

@@ -47,6 +47,9 @@ export class RegistrarComponent implements OnInit {
         .subscribe({
           next: (usuario: Usuario) =>{
             this.usuarioService.loguear(usuario);
+            this.usuarioService.setJWTToken(usuario.token);
+            this.usuarioService.darUsuarioID(usuario.idUsuario); 
+            this.usuarioService.cambiarEstado(2);
             this.router.navigate(['/juego']);
           },
           error:()=>{            

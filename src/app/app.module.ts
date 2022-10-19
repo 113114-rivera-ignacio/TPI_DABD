@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,6 +18,7 @@ import { CartasSinJugarService } from './services/cartas-sin-jugar.service';
 import { CartaService } from './services/cartas.service';
 import { UsuarioService } from './services/usuario.service';
 import { RegistrarComponent } from './registrar/registrar.component';
+import { UniversalAppInterceptor } from './services/AppInterceptor';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,9 @@ import { RegistrarComponent } from './registrar/registrar.component';
     CartasSinJugarService,
     CartaService,
     UsuarioService,
+    { provide: HTTP_INTERCEPTORS, useClass: UniversalAppInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
+  
 })
 export class AppModule {}

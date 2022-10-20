@@ -1,0 +1,59 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div id="tarjeta" class="col-12 col-xl-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row d-flex aling-items-center">
+                        <div class="col-md-6 col-xl-7 align-self-center">
+                            <div class="text-center">
+                                <img class="rounded" id="imgLogo" src="https://github.com/Noe1129/Imagenes_blackjack/blob/main/login.jpg?raw=true">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4 mx-3 text center">
+                            <h2 class="fw-bold-md-4 pb-2">Registrarse</h2>
+                            <form [formGroup]="formulario">
+                            <div class="form-outline mb-3">
+                                <label for="typeUsuario" class="form-label">Usuario</label>
+                                <input type="text" id="typeUsuario" class="form-control form-control-lg" formControlName="usuario">
+                                <div class="text-danger"
+                                *ngIf="formulario.get('usuario')?.hasError('required') && formulario.get('usuario')?.touched" >    
+                              <span>Ingrese un usuario</span>
+                            </div>
+                            </div>
+                            <div formGroupName="passwords">
+                            <div class="form-outline mb-4">
+                                <label for="typePassword" class="form-label">Contraseña</label>
+                                <input type="password" id="typePassword" class="form-control form-control-lg" formControlName="password">
+                                <div class="text-danger"
+                                *ngIf="formulario.get('password')?.hasError('required') && formulario.get('password')?.touched" >    
+                              <span>Ingrese una contraseña</span>
+                            </div>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label for="typeConfirmPassword" class="form-label">Confirmar contraseña</label>
+                                <input type="password" id="typeConfirmPassword" class="form-control form-control-lg" formControlName="confirmPassword">
+                                <div class="text-danger"
+                                *ngIf="formulario.get('confirmPassword')?.hasError('required') && formulario.get('confirmPassword')?.touched" >    
+                              <span>Ingrese una contraseña</span>
+                            </div>
+
+
+                            <div class="text-danger"  *ngIf="formulario.get('passwords')?.hasError('pepe') && formulario.get('passwords')?.get('password')?.touched && formulario.get('passwords')?.get('confirmPassword')?.touched">
+                                <span>Las contraseñas no coinciden</span>
+                        </div>
+                        
+                        
+                        </div>
+                        </div>
+                            
+                            <div class="text-center">
+                                <button class="btn btn-info btn-block btn-lg btn-dark" (click)="enviar()">Aceptar</button>                                
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

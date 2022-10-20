@@ -350,7 +350,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
 
   jugarMano() {
-    if (this.cartasSinJugar.length < 90) {
+    if (this.cartasSinJugar.length < 20) {
       this.mensajeMezclar();
     } else {
 

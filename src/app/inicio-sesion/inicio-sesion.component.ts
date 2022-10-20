@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { UsuarioService } from '../services/usuario.service';
   templateUrl: './inicio-sesion.component.html',
   styleUrls: ['./inicio-sesion.component.css']
 })
-export class InicioSesionComponent implements OnInit {
+export class InicioSesionComponent implements OnInit, OnDestroy {
 
   //@Output() usuarioLogeado = new EventEmitter<Usuario>();
   formulario: FormGroup;
@@ -19,6 +19,10 @@ export class InicioSesionComponent implements OnInit {
   private suscripcion = new Subscription();
 
   constructor(private usuarioService : UsuarioService, private formBuilder: FormBuilder, private router:Router) { }
+
+  ngOnDestroy(): void {
+    this.suscripcion.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.formulario = this.formBuilder.group({

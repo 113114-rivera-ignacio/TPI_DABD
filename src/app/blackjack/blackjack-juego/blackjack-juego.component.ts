@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
 import { CartasConId } from 'src/app/models/cartasConId';
-import { Usuario } from 'src/app/models/usuario';
 import { CartaCroupierService } from 'src/app/services/carta-croupier.service';
 import { CartaJugadorService } from 'src/app/services/carta-jugador.service';
 import { CartasJugadasService } from 'src/app/services/cartas-jugadas.service';
@@ -47,7 +46,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     private cartaJugadorService: CartaJugadorService,
     private cartasJugadasService: CartasJugadasService,
     private cartasSinJugarService: CartasSinJugarService,
-    private activatedRoute: ActivatedRoute,
     private usuarioService: UsuarioService) { }
 
   ngOnDestroy(): void {
@@ -100,8 +98,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
             });
             this.mostrarCrupier();
           }
-
-          console.log(respuesta);
         },
         error: () => {
           alert('Sin cartas Croupier');
@@ -113,7 +109,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartaCroupierService.eliminarCartaCroupier(this.usuarioID).subscribe({
         next: () => {
-          console.log("Cartas del croupier eliminadas");
         },
         error: () => {
           alert("Error al eliminar cartas del croupier");
@@ -139,7 +134,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
           } else {
             this.mostrarPuntajeJugador = this.puntajeJugador.toString();
           }
-          console.log(respuesta)
         },
         error: () => {
           alert('Sin cartas Jugador');
@@ -151,7 +145,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartaJugadorService.eliminarCartasJugador(this.usuarioID).subscribe({
         next: () => {
-          console.log('Cartas del jugador eliminadas');
         },
         error: () => {
           alert("Error al eliminar cartas del jugador");
@@ -160,29 +153,36 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
 
   // Metodos SIN JUGAR
-  obtenerCartasSinJugar() {
+  public obtenerCartasSinJugar() {
     this.suscripcion.add(
       this.cartasSinJugarService.obtenerCartaSinJugar(this.usuarioID).subscribe({
         next: (respuesta: Carta[]) => {
           if (respuesta.length > 0) {
             this.cartasSinJugar = respuesta;
-            console.log(respuesta);
           }
           else {
-            this.suscripcion.add(
-              this.cartaService.obtenerCarta().subscribe({
-                next: (respuesta: Carta[]) => {
-                  this.cartasSinJugar = respuesta;
-                  this.InsertarCartasSinJugar();
-                },
-                error: () => {
-                  alert('No se pudo cargar mazo.');
-                }
-              })
-            );
+            this.cargarMazoCompleto();
+            this.cargarMazoCompleto();
           }
         },
         error: () => {
+        }
+      })
+    );
+  }
+
+  public cargarMazoCompleto() {
+    this.suscripcion.add(
+      this.cartaService.obtenerCarta().subscribe({
+        next: (respuesta: Carta[]) => {
+          respuesta.forEach(element => {
+            this.cartasSinJugar.push(element);
+          });
+          //this.cartasSinJugar = respuesta;
+          this.InsertarCartasSinJugar(respuesta);
+        },
+        error: () => {
+          alert('No se pudo cargar mazo.');
         }
       })
     );
@@ -192,7 +192,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartasSinJugarService.eliminarCartaSinJugar(idUsuario, carta.id).subscribe({
         next: () => {
-          console.log('cartas sin jugar eliminadas');
         },
         error: () => {
           alert("Error al eliminar carta");
@@ -205,7 +204,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartasSinJugarService.eliminarTodasCartasSinJugar(this.usuarioID).subscribe({
         next: () => {
-          console.log('cartas sin jugar eliminadas');
         },
         error: () => {
           alert("Error al eliminar cartas sin jugar");
@@ -214,8 +212,8 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   }
 
-  public InsertarCartasSinJugar() {
-    this.cartasSinJugar.forEach(element => {
+  public InsertarCartasSinJugar(arreglo: Carta[]) {
+    arreglo.forEach(element => {
       this.cartasSinJugarService.agregarCartaSinJugar(new CartasConId(element.id, this.usuarioID))
         .subscribe({
           next: () => {
@@ -230,7 +228,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.cartasJugadasService.obtenerCartasJugadas(this.usuarioID).subscribe({
         next: (respuesta: Carta[]) => {
           this.cartasJugadas = respuesta;
-          console.log(respuesta)
         },
         error: () => {
           alert('error al obtener las cartas jugadas');
@@ -243,7 +240,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.suscripcion.add(
       this.cartasJugadasService.eliminarTodasCartasJugadas(this.usuarioID).subscribe({
         next: () => {
-          console.log('cartas jugadas eliminadas');
         },
         error: () => {
           alert("Error al eliminar cartas jugadas");
@@ -252,7 +248,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
   // -----------------------------------------------------------------
 
-  obtenerCartaJugador() {
+  public obtenerCartaJugador() {
     const random = Math.floor(Math.random() * this.cartasSinJugar.length);
     this.cartasJugador.push(this.cartasSinJugar[random]);
     this.cartaJugadorService.agregarCartaJugador(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
@@ -281,7 +277,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     }
   }
 
-  obtenerCartaCrupier() {
+  public obtenerCartaCrupier() {
     const random = Math.floor(Math.random() * this.cartasSinJugar.length);
     this.cartasCrupier.push(this.cartasSinJugar[random]);
     this.cartaCroupierService.agregarCartaCroupier(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
@@ -326,15 +322,35 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Si, mezclar!',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.eliminarTodasCartasSinJugar();
-        this.eliminarCartasJugadas()
-        this.obtenerCartasSinJugar();
+        this.volverAMezclarMazo()
       }
     });
   }
 
+  public volverAMezclarMazo() {
+    this.suscripcion.add(
+      this.cartasSinJugarService.eliminarTodasCartasSinJugar(this.usuarioID).subscribe({
+        next: () => {
+          this.cartasSinJugar = [];
+          this.cartasJugadasService.eliminarTodasCartasJugadas(this.usuarioID).subscribe({
+            next: () => {
+              this.cartasJugadas = [];
+              this.cargarMazoCompleto();
+              this.cargarMazoCompleto();                         
+            },
+            error: () => {
+              alert("Error al eliminar cartas jugadas");
+            },
+          });
+        },
+        error: () => {
+          alert("Error al eliminar cartas sin jugar");
+        },
+      }));
+  }
+
   jugarMano() {
-    if (this.cartasSinJugar.length < 20) {
+    if (this.cartasSinJugar.length < 90) {
       this.mensajeMezclar();
     } else {
 

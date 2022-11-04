@@ -19,6 +19,9 @@ import { CartaService } from './services/cartas.service';
 import { UsuarioService } from './services/usuario.service';
 import { RegistrarComponent } from './registrar/registrar.component';
 import { UniversalAppInterceptor } from './services/AppInterceptor';
+import { NgChartsModule } from 'ng2-charts';
+import { ReporteUnoComponent } from './reportes/reporte-uno/reporte-uno.component';
+import { ReportesComponent } from './reportes/reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import { UniversalAppInterceptor } from './services/AppInterceptor';
     BlackjackJuegoComponent,
     BlackjackCartasComponent,
     RegistrarComponent,
+    ReporteUnoComponent,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +41,8 @@ import { UniversalAppInterceptor } from './services/AppInterceptor';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    NgChartsModule,
+
   ],
   providers: [
     AuthGuard,

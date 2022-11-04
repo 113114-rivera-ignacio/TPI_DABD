@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reportes',
@@ -6,10 +7,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent implements OnInit {
+  opcion:number;
 
-  constructor() { }
+  constructor(private router:Router) { }
 
   ngOnInit(): void {
+
   }
+
+
+
+
+  option:number;
+
+
+  mostrarReporte1(){
+   this.option = 0;
+ }
+
+ mostrarReporte2(){
+  this.option =1;
+}
+mostrarReporte3(){
+  this.option =2;
+}
+
+
+  
 
 }

@@ -1,2 +1,33 @@
-<app-reporte-uno></app-reporte-uno>
+<div class="container text-left">
+    <!-- <h1 class="text-white">Reportes</h1> -->
+    <div class="row">
+         <div class="col-3 mt-3">            
+            <button type="button" class="btn btn-dark" (click)="mostrarReporte1()">Cantidad de Sesiones por Usuario</button><br>            
+        </div>
+        <div class="col-3 mt-3"> 
+        <button type="button" class="btn btn-dark" (click)="mostrarReporte2()">Cantidad de Sesiones por Usuario</button><br>
+        </div>
+        <div class="col-3 mt-3"> 
+        <button type="button" class="btn btn-dark" (click)="mostrarReporte3()">Cantidad de Sesiones por Usuario</button><br>
+        </div>
+
+        
+        
+    </div>
+    <div class="row text-end mt-5">
+        <div class="col-8 text-end" *ngIf="option == 0">
+            <app-reporte-uno></app-reporte-uno>
+        </div>
+          <div class="col-8 text-end" *ngIf="option == 1">
+            <app-reporte-dos></app-reporte-dos>            
+          </div>
+          <div class="col-8 text-end" *ngIf="option == 2">
+            <app-reporte-tres></app-reporte-tres>            
+          </div>
+    </div>
+    
+    
+</div>
+
+
 

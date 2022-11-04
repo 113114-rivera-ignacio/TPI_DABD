@@ -22,6 +22,8 @@ import { UniversalAppInterceptor } from './services/AppInterceptor';
 import { NgChartsModule } from 'ng2-charts';
 import { ReporteUnoComponent } from './reportes/reporte-uno/reporte-uno.component';
 import { ReportesComponent } from './reportes/reportes/reportes.component';
+import { ReporteDosComponent } from './reportes/reporte-dos/reporte-dos.component';
+import { ReporteTresComponent } from './reportes/reporte-tres/reporte-tres.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { ReportesComponent } from './reportes/reportes/reportes.component';
     RegistrarComponent,
     ReporteUnoComponent,
     ReportesComponent,
+    ReporteDosComponent,
+    ReporteTresComponent,
   ],
   imports: [
     BrowserModule,

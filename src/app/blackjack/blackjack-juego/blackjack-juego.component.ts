@@ -272,9 +272,19 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     if (this.puntajeJugador > 21) {
       this.manoTerminada = true;
       this.volverAJugar = false;
+      
       this.mostrarCrupier();
       this.mostrarMensaje(2);
     }
+  }
+
+  public ejecutarAumentarPerdida(){
+    this.suscripcion.add(this.usuarioService.aumentarPerdidaJugador(this.usuarioID).subscribe({
+      next: () => {},
+      error: () => {
+        alert("error al aumentar perdida");
+      }
+    }));
   }
 
   public obtenerCartaCrupier() {
@@ -372,7 +382,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
           this.mostrarMensaje(0);
           return;
         }
-
+        this.suscripcion.add(this.usuarioService.aumentarBlackJackJugador(this.usuarioID).subscribe({
+          next:()=>{},
+          error:()=>{}
+        }))
         this.mostrarMensaje(3);
       }
     }
@@ -443,6 +456,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
         break;
       case 2:
         this.mostrarMensajePerdio();
+        this.ejecutarAumentarPerdida();
         break;
       case 3:
         this.mostrarMensajeGano("BlackJack!!!");

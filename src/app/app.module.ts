@@ -24,6 +24,7 @@ import { ReporteUnoComponent } from './reportes/reporte-uno/reporte-uno.componen
 import { ReportesComponent } from './reportes/reportes/reportes.component';
 import { ReporteDosComponent } from './reportes/reporte-dos/reporte-dos.component';
 import { ReporteTresComponent } from './reportes/reporte-tres/reporte-tres.component';
+import { ReporteCuatroComponent } from './reportes/reporte-cuatro/reporte-cuatro.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,8 @@ import { ReporteTresComponent } from './reportes/reporte-tres/reporte-tres.compo
     ReportesComponent,
     ReporteDosComponent,
     ReporteTresComponent,
+    ReporteCuatroComponent,
+
   ],
   imports: [
     BrowserModule,

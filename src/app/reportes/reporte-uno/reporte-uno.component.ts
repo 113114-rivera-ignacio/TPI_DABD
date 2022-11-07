@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartData } from 'chart.js';
-import { Subscription } from 'rxjs';
+import { Subscription, withLatestFrom } from 'rxjs';
 import { Sesion } from 'src/app/models/sesion';
 import { ReporteService } from 'src/app/services/reporte.service';
 
@@ -56,6 +56,16 @@ export class ReporteUnoComponent implements OnInit, OnDestroy {
         text: 'Cantidad de Sesiones por Usuario',
       },
     },
+    scales: {
+      y:{
+        ticks:{
+          color: "white"
+        }
+      },
+      x:{
+        
+      }
+    }
   };
 }
 

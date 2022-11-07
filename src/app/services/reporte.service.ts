@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ReporteCuatro } from '../models/reporte-cuatro';
 import { ReporteDos } from '../models/reporte-dos';
 import { ReporteTres } from '../models/reporte-tres';
 import { Sesion } from '../models/sesion';
@@ -21,7 +22,12 @@ export class ReporteService {
   obtenerJugadasGanadas(idUsuario:number): Observable<ReporteDos> {
     return this.http.get<ReporteDos>(this.URLAPI + "Usuario/GanadasJugador?id="+idUsuario);
   } 
+  
   obtenerBlackjackNatural(idUsuario:number): Observable<ReporteTres> {
     return this.http.get<ReporteTres>(this.URLAPI + "Usuario/GanadasBlackjack?id="+idUsuario);
   } 
+
+  obtenerTotalGanadasPerdidas(): Observable<ReporteCuatro>{
+    return this.http.get<ReporteCuatro>(this.URLAPI + 'Usuario/TotalGanadasPerdidas');
+  }
 }

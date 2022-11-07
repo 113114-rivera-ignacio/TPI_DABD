@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, SimpleChange } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ReporteCuatro } from '../models/reporte-cuatro';
 import { Usuario } from '../models/usuario';
 
 @Injectable({
@@ -76,4 +77,11 @@ export class UsuarioService {
     this.token=token;
   }
 
+  aumentarPerdidaJugador(idUsuario: number): Observable<number>{
+    return this.http.put<number>(this.URLAPI + 'Usuario/PutGanadasCroupier'+idUsuario, idUsuario);
+  }
+
+  aumentarBlackJackJugador(idUsuario: number): Observable<any>{
+    return this.http.put<number>(this.URLAPI + "Usuario/PutJugadorBlackjack"+idUsuario, idUsuario);
+  }  
 }

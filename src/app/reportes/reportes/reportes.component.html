@@ -1,32 +1,44 @@
-<div class="container text-left">    
-    <div class="row">
-         <div class="col-3 mt-3">            
-            <button type="button" class="btn btn-dark" (click)="mostrarReporte1()">Cantidad de Sesiones por Usuario</button><br>            
-        </div>
-        <div class="col-3 mt-3"> 
-        <button type="button" class="btn btn-dark" (click)="mostrarReporte2()">Cantidad de Partidas Ganadas</button><br>
-        </div>
-        <div class="col-3 mt-3"> 
-        <button type="button" class="btn btn-dark" (click)="mostrarReporte3()">Cantidad de Blackjack Natural</button><br>
-        </div>
-
-        
-        
+<div id="carruselReportes" class="carousel slide" data-bs-ride="false" style="height: 75vh; width: 75vw;">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carruselReportes" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carruselReportes" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carruselReportes" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carruselReportes" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    <button type="button" data-bs-target="#carruselReportes" data-bs-slide-to="4" aria-label="Slide 5"></button>
+  </div>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="container-fluid d-flex align-items-center" style="height: 75vh;">
+        <app-reporte-uno style="width: 75vw;"></app-reporte-uno>        
+      </div>      
     </div>
-    <div class="row text-end mt-5">
-        <div class="col-8 text-end" *ngIf="option == 0">
-            <app-reporte-uno></app-reporte-uno>
-        </div>
-          <div class="col-8 text-end" *ngIf="option == 1">
-            <app-reporte-dos></app-reporte-dos>            
-          </div>
-          <div class="col-8 text-end" *ngIf="option == 2">
-            <app-reporte-tres></app-reporte-tres>            
-          </div>
+    <div class="carousel-item">
+      <div class="container-fluid d-flex align-items-center" style="height: 75vh;">
+        <app-reporte-dos style="width: 75vw;"></app-reporte-dos>        
+      </div>   
     </div>
-    
-    
+    <div class="carousel-item">
+      <div class="container-fluid d-flex align-items-center" style="height: 75vh;">
+        <app-reporte-tres style="width: 75vw;"></app-reporte-tres>        
+      </div>  
+    </div>
+    <div class="carousel-item">
+      <div class="container-fluid d-flex align-items-center" style="height: 75vh;">
+        <app-reporte-cuatro style="width: 75vw;"></app-reporte-cuatro>        
+      </div>  
+    </div>
+    <div class="carousel-item">
+      <div class="container-fluid d-flex align-items-center" style="height: 75vh;">
+        <app-reporte-cinco style="width: 75vw;"></app-reporte-cinco>        
+      </div>  
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carruselReportes" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carruselReportes" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
-
-
-

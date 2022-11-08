@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Carta } from 'src/app/models/carta';
 import { CartasConId } from 'src/app/models/cartasConId';
@@ -18,8 +17,6 @@ import Swal from 'sweetalert2';
 })
 
 export class BlackjackJuegoComponent implements OnInit, OnDestroy {
-  //$valorObservable : Observable<number>
-  //cartas: Carta[];
 
   cartasJugadas: Carta[] = [];
   cartasSinJugar: Carta[] = [];
@@ -39,7 +36,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   usuarioID: number;
 
   private suscripcion = new Subscription();
-
 
   constructor(private cartaService: CartaService,
     private cartaCroupierService: CartaCroupierService,
@@ -69,7 +65,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     this.obtenerCartasJugadas();
   }
 
-  public cargarUsuarioId() {
+  cargarUsuarioId() {
     this.suscripcion.add(
       this.usuarioService.obtenerUsuarioID().subscribe({
         next: (id: number) => {
@@ -194,7 +190,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
         next: () => {
         },
         error: () => {
-          alert("Error al eliminar carta");
+          alert("Error al eliminar carta sin jugar" + carta.carta + carta.id);
         },
       }));
   }
@@ -214,11 +210,11 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
   public InsertarCartasSinJugar(arreglo: Carta[]) {
     arreglo.forEach(element => {
-      this.cartasSinJugarService.agregarCartaSinJugar(new CartasConId(element.id, this.usuarioID))
+      this.suscripcion.add(this.cartasSinJugarService.agregarCartaSinJugar(new CartasConId(element.id, this.usuarioID))
         .subscribe({
           next: () => {
           }
-        });
+        }));
     });
   }
 
@@ -248,10 +244,11 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   }
   // -----------------------------------------------------------------
 
-  public obtenerCartaJugador() {
+  obtenerCartaJugador() {
     const random = Math.floor(Math.random() * this.cartasSinJugar.length);
     this.cartasJugador.push(this.cartasSinJugar[random]);
-    this.cartaJugadorService.agregarCartaJugador(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    this.suscripcion.add(
+      this.cartaJugadorService.agregarCartaJugador(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({}));
 
     this.puntajeJugador = this.calcularPuntaje(
       this.cartasSinJugar[random],
@@ -259,7 +256,8 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.cartasJugador
     );
 
-    this.cartasJugadasService.agregarCartasJugadas(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    this.suscripcion.add(
+      this.cartasJugadasService.agregarCartasJugadas(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({}));
     this.eliminarCartaSinJugar(this.usuarioID, this.cartasSinJugar[random]);
     this.cartasSinJugar.splice(random, 1);
 
@@ -276,27 +274,20 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.mostrarCrupier();
       this.mostrarMensaje(2);
     }
-  }
+  }  
 
-  public ejecutarAumentarPerdida(){
-    this.suscripcion.add(this.usuarioService.aumentarPerdidaJugador(this.usuarioID).subscribe({
-      next: () => {},
-      error: () => {
-        alert("error al aumentar perdida");
-      }
-    }));
-  }
-
-  public obtenerCartaCrupier() {
+  obtenerCartaCrupier() {
     const random = Math.floor(Math.random() * this.cartasSinJugar.length);
     this.cartasCrupier.push(this.cartasSinJugar[random]);
-    this.cartaCroupierService.agregarCartaCroupier(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    this.suscripcion.add(
+      this.cartaCroupierService.agregarCartaCroupier(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({}));
     this.puntajeCrupier = this.calcularPuntaje(
       this.cartasSinJugar[random],
       this.puntajeCrupier,
       this.cartasCrupier
     );
-    this.cartasJugadasService.agregarCartasJugadas(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({});
+    this.suscripcion.add(
+      this.cartasJugadasService.agregarCartasJugadas(new CartasConId(this.cartasSinJugar[random].id, this.usuarioID)).subscribe({}));
     this.eliminarCartaSinJugar(this.usuarioID, this.cartasSinJugar[random]);
     this.cartasSinJugar.splice(random, 1);
   }
@@ -337,12 +328,12 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     });
   }
 
-  public volverAMezclarMazo() {
+  volverAMezclarMazo() {
     this.suscripcion.add(
       this.cartasSinJugarService.eliminarTodasCartasSinJugar(this.usuarioID).subscribe({
         next: () => {
           this.cartasSinJugar = [];
-          this.cartasJugadasService.eliminarTodasCartasJugadas(this.usuarioID).subscribe({
+          this.suscripcion.add(this.cartasJugadasService.eliminarTodasCartasJugadas(this.usuarioID).subscribe({
             next: () => {
               this.cartasJugadas = [];
               this.cargarMazoCompleto();
@@ -351,7 +342,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
             error: () => {
               alert("Error al eliminar cartas jugadas");
             },
-          });
+          }));
         },
         error: () => {
           alert("Error al eliminar cartas sin jugar");
@@ -373,6 +364,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.obtenerCartaCrupier();
       this.mostrarCrupier();
 
+      if (this.puntajeCrupier == 21) {
+        this.aumentarBlackjackCroupier();
+      }
+
       if (this.puntajeJugador == 21) {
         this.volverAJugar = false;
         this.manoTerminada = true;
@@ -380,12 +375,10 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
 
         if (this.puntajeCrupier == 21) {
           this.mostrarMensaje(0);
+          this.aumentarBlackjackCroupier();
           return;
         }
-        this.suscripcion.add(this.usuarioService.aumentarBlackJackJugador(this.usuarioID).subscribe({
-          next:()=>{},
-          error:()=>{}
-        }))
+
         this.mostrarMensaje(3);
       }
     }
@@ -446,26 +439,6 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
     });
   }
 
-  mostrarMensaje(puntaje: number) { //0:Empate 1:Gana 2:Pierde 3:Blackjack
-    switch (puntaje) {
-      case 0:
-        this.mostrarMensajeEmpate();
-        break;
-      case 1:
-        this.mostrarMensajeGano();
-        break;
-      case 2:
-        this.mostrarMensajePerdio();
-        this.ejecutarAumentarPerdida();
-        break;
-      case 3:
-        this.mostrarMensajeGano("BlackJack!!!");
-        break;
-    }
-    this.cartaJugadorService.eliminarCartasJugador(this.usuarioID).subscribe({});
-    this.cartaCroupierService.eliminarCartaCroupier(this.usuarioID).subscribe({});
-  }
-
   limpiarMesa() {
     this.cartasJugador = [];
     this.cartasCrupier = [];
@@ -488,4 +461,70 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
       this.cartasCrupier[1].id = 'dorso';
     }
   }
+
+  mostrarMensaje(puntaje: number) { //0:Empate 1:Gana 2:Pierde 3:Blackjack
+    switch (puntaje) {
+      case 0:
+        this.mostrarMensajeEmpate();
+        break;
+      case 1:
+        this.mostrarMensajeGano();
+        this.aumentarGanadaJugador();
+        break;
+      case 2:
+        this.mostrarMensajePerdio();
+        this.aumentarPerdidaJugador();
+        break;
+      case 3:
+        this.mostrarMensajeGano("BlackJack!!!");
+        this.aumentarBlackjackJugador();
+        break;
+    }
+    this.suscripcion.add(this.cartaJugadorService.eliminarCartasJugador(this.usuarioID).subscribe({}));
+    this.suscripcion.add(this.cartaCroupierService.eliminarCartaCroupier(this.usuarioID).subscribe({}));
+  }  
+
+  aumentarPerdidaJugador(){
+    this.suscripcion.add(this.usuarioService.aumentarPerdidaJugador(this.usuarioID).subscribe({
+      next: () => {
+        alert("+1 perdidas");
+      },
+      error: () => {
+        alert("error al aumentar perdida");
+      }
+    }));
+  }
+
+  aumentarGanadaJugador(){
+    this.suscripcion.add(this.usuarioService.aumentarGanadaJugador(this.usuarioID).subscribe({
+      next: () =>{
+        alert("+1 ganadas")
+      },
+      error: () => {
+        alert("error al aumentar ganada");
+      }
+    }));
+  }
+
+  aumentarBlackjackJugador(){
+    this.suscripcion.add(this.usuarioService.aumentarBlackJackJugador(this.usuarioID).subscribe({
+      next: () =>{
+        alert("+1 bjck jug")
+      },
+      error: () =>{
+        alert("Error al aumentar blackjack jugador");
+      }
+    }));
+  }
+
+  aumentarBlackjackCroupier(){
+    this.suscripcion.add(this.usuarioService.aumentarBlackJackCroupier(this.usuarioID).subscribe({
+      next: () => {
+        alert("+1 bjck croup")
+      },
+      error: () => {
+        alert("Error al aumentar blackjack croupier");
+      }
+    }));
+  }  
 }

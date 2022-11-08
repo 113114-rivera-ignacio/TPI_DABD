@@ -13,10 +13,11 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class ReporteTresComponent implements OnInit {
 
   usuarioID: number;
+  sinDatos: boolean = false;
   private suscripcion = new Subscription();
   private labels: string[] = [
-    'Cantidad de Blackjack natural por el Jugador',
-    'Cantidad de Blackjack natural por el Croupier',
+    'BlackJacks del Jugador',
+    'BlackJacks del Croupier',
   ];
 
   constructor(
@@ -44,10 +45,12 @@ export class ReporteTresComponent implements OnInit {
   }
 
   public obtenerJugadasGanadas() {
-    this.suscripcion.add(
-      //cambiar parametro this.usuarioID
+    this.suscripcion.add(      
       this.servicioReporte.obtenerBlackjackNatural(this.usuarioID).subscribe({
         next: (respuesta: ReporteTres) => {
+          if(respuesta.blackJackJugador == 0 && respuesta.blackJackCroupier == 0){
+            this.sinDatos = true;
+          };
           this.datos = {
             labels: this.labels,
             datasets: [
@@ -68,12 +71,21 @@ export class ReporteTresComponent implements OnInit {
       legend: {
         position: 'bottom',
         display: true,
+        labels:{
+          font:{
+            family: 'sans-serif',
+            size: 14           
+          }
+        }        
       },
       title: {
-        display: true,
-        text: 'Cantidad de Blackjack Natural',
-      },
+        display: false,        
+      }, 
+      datalabels:{
+        color: 'white',              
+      }      
     },
+    color: 'white'
   };
 
 }

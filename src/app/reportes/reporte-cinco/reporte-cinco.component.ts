@@ -1,20 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartData } from 'chart.js';
 import { Subscription } from 'rxjs';
-import { Sesion } from 'src/app/models/sesion';
+import { ReporteCinco } from 'src/app/models/reporte-cinco';
 import { ReporteService } from 'src/app/services/reporte.service';
 
 @Component({
-  selector: 'app-reporte-uno',
-  templateUrl: './reporte-uno.component.html',
-  styleUrls: ['./reporte-uno.component.css'],
+  selector: 'app-reporte-cinco',
+  templateUrl: './reporte-cinco.component.html',
+  styleUrls: ['./reporte-cinco.component.css']
 })
-export class ReporteUnoComponent implements OnInit, OnDestroy {
+export class ReporteCincoComponent implements OnInit, OnDestroy {
 
   private suscripcion = new Subscription();
-  private labels: string[] = [''];
+  private labels: string[] = ['Cantidad de Ganadas'];
 
-  constructor(private servicioReporte: ReporteService) {}
+  constructor(private servicioReporte: ReporteService) { }
 
   ngOnDestroy(): void {
     this.suscripcion.unsubscribe();
@@ -24,29 +24,31 @@ export class ReporteUnoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.suscripcion.add(
-      this.servicioReporte.obtenerSesionesPorUsuario().subscribe({
-        next: (respuesta: Sesion[]) => {
-          var ordenada: Sesion[] = respuesta.sort((n1, n2) =>{
-            if(n1.cantidad>n2.cantidad){
+      this.servicioReporte.obtenerRankingGanadas().subscribe({
+        next: (respuesta: ReporteCinco[]) => {
+          var ordenada: ReporteCinco[] = respuesta.sort((n1, n2) =>{
+            if(n1.ganadas>n2.ganadas){
               return -1;
             }
-            if(n1.cantidad<n2.cantidad){
+            if(n1.ganadas<n2.ganadas){
               return 1;
             }
             return 0;
           });
-          const datosTransformados = ordenada.map((sesion) => {
+          const datosTransformados = ordenada.map((ranking) => {
             return {
-              data: [sesion.cantidad],
-              label: sesion.nombreUsuario,
+              data: [ranking.ganadas],
+              label: ranking.usuario,
               barThickness: 45, 
               borderRadius: 4,
-              maxBarThickness:40 
+              maxBarThickness:40
             };
           });
+
           this.datos = {
             labels: this.labels,
-            datasets: datosTransformados,            
+            datasets: datosTransformados,
+            
           };
         },
         error: () => alert('API no responde'),
@@ -54,7 +56,6 @@ export class ReporteUnoComponent implements OnInit, OnDestroy {
     );
   }
 
-  
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     plugins: {
@@ -66,14 +67,15 @@ export class ReporteUnoComponent implements OnInit, OnDestroy {
             family: 'sans-serif',
             size: 14          
           },          
-        }                                    
+        }                                        
       },
       title: {
-        display: false,        
+        display: false,
       }, 
       datalabels:{
         color: 'white',
-      }                 
+      },
+                 
     },        
   scales:{      
     x: {                         
@@ -83,7 +85,7 @@ export class ReporteUnoComponent implements OnInit, OnDestroy {
       },
       ticks: {color: 'white'},
       offset: true            
-    },    
+    },
     y: {                   
       grid: {
         color : 'white',
@@ -92,7 +94,8 @@ export class ReporteUnoComponent implements OnInit, OnDestroy {
       ticks: {color: 'white'},            
     },
   }, 
-  color: 'white',   
+  color: 'white', 
+  
   };
-}
 
+}

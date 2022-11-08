@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ChartConfiguration, ChartData } from 'chart.js';
+import { ChartConfiguration, ChartData, Chart } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { ReporteDos } from 'src/app/models/reporte-dos';
 import { ReporteService } from 'src/app/services/reporte.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+Chart.register(ChartDataLabels);
 
 @Component({
   selector: 'app-reporte-dos',
@@ -12,16 +14,19 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class ReporteDosComponent implements OnInit {
   usuarioID: number;
+  sinDatos: boolean = false;
   private suscripcion = new Subscription();
+
   private labels: string[] = [
-    'Cantidad de partidas ganadas por Jugador',
-    'Cantidad de partidas ganadas por el Croupier',
+    'Partidas ganadas por el Jugador',
+    'Partidas ganadas por el Croupier',
   ];
 
   constructor(
     private servicioReporte: ReporteService,
     private usuarioService: UsuarioService
   ) {}
+
   ngOnDestroy(): void {
     this.suscripcion.unsubscribe();
   }
@@ -32,6 +37,7 @@ export class ReporteDosComponent implements OnInit {
     this.cargarUsuarioId();
     this.obtenerJugadasGanadas();
   }
+
   public cargarUsuarioId() {
     this.suscripcion.add(
       this.usuarioService.obtenerUsuarioID().subscribe({
@@ -44,9 +50,11 @@ export class ReporteDosComponent implements OnInit {
 
   public obtenerJugadasGanadas() {
     this.suscripcion.add(
-      //cambiar parametro this.usuarioID
       this.servicioReporte.obtenerJugadasGanadas(this.usuarioID).subscribe({
         next: (respuesta: ReporteDos) => {
+          if(respuesta.ganadasJugador == 0 && respuesta.ganadasCroupier == 0){
+            this.sinDatos = true;
+          };
           this.datos = {
             labels: this.labels,
             datasets: [
@@ -54,7 +62,7 @@ export class ReporteDosComponent implements OnInit {
                 data: [respuesta.ganadasJugador, respuesta.ganadasCroupier],
               },
             ],
-          };
+          };         
         },
         error: () => alert('API no responde'),
       })
@@ -67,11 +75,30 @@ export class ReporteDosComponent implements OnInit {
       legend: {
         position: 'bottom',
         display: true,
+        labels:{
+          font:{
+            family: 'sans-serif',
+            size: 14           
+          }
+        } 
       },
       title: {
-        display: true,
-        text: 'Cantidad de Partidas Ganadas',
+        display: false,        
       },
+      datalabels:{
+        color: 'white',
+        formatter: function(value, context) {
+          var data = context.dataset.data,              
+              total = 0;              
+          data.forEach((x) => {
+            if(x!=null){
+              total += x as number;
+            }
+          });    
+          return Math.round((value*100)/total) + '%';
+        },       
+      }                               
     },
+    color: 'white',        
   };
 }

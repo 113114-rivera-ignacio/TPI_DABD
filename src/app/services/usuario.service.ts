@@ -77,11 +77,19 @@ export class UsuarioService {
     this.token=token;
   }
 
+  aumentarGanadaJugador(idUsuario:number): Observable<any>{
+    return this.http.put<number>(this.URLAPI + 'Usuario/PutGanadasJugador' + idUsuario, idUsuario);
+  }
+
   aumentarPerdidaJugador(idUsuario: number): Observable<number>{
-    return this.http.put<number>(this.URLAPI + 'Usuario/PutGanadasCroupier'+idUsuario, idUsuario);
+    return this.http.put<number>(this.URLAPI + 'Usuario/PutGanadasCroupier' + idUsuario, idUsuario);
   }
 
   aumentarBlackJackJugador(idUsuario: number): Observable<any>{
-    return this.http.put<number>(this.URLAPI + "Usuario/PutJugadorBlackjack"+idUsuario, idUsuario);
+    return this.http.put<number>(this.URLAPI + 'Usuario/PutJugadorBlackjack' + idUsuario, idUsuario);
   }  
+
+  aumentarBlackJackCroupier(idUsuario: number): Observable<any>{
+    return this.http.put<number>(this.URLAPI + 'Usuario/PutCroupierBlackjack' + idUsuario, idUsuario);
+  }
 }

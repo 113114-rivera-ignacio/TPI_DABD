@@ -6,7 +6,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { InicioSesionComponent } from './inicio-sesion/inicio-sesion.component';
 import { RegistrarComponent } from './registrar/registrar.component';
-import { ReporteUnoComponent } from './reportes/reporte-uno/reporte-uno.component';
 import { ReportesComponent } from './reportes/reportes/reportes.component';
 
 

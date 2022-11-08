@@ -1,3 +1,5 @@
-<div style="width: 430px;  background-color: rgb(249, 255, 223);">
+<h3 class="text-center" style="margin-bottom: 3vh; color: white;">Cantidad de BlackJacks</h3>
+<div *ngIf="!sinDatos" class="container-fluid" style="width: 25vw; margin: auto">
     <canvas baseChart type="pie" [data]="datos" [options]="barChartOptions"></canvas>
 </div>
+<p *ngIf="sinDatos" class="text-center lead" style="color: white;">No hubo BlackJacks hasta el momento</p>

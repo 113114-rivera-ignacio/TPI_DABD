@@ -12,17 +12,16 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 })
 export class ReporteCuatroComponent implements OnInit {
 
-  usuarioID: number;
   private suscripcion = new Subscription();
   private labels: string[] = [
-    'Cantidad de partidas ganadas por Jugador',
-    'Cantidad de partidas ganadas por el Croupier',
+    'Probabilidad del Jugador',
+    'Probabilidad del Croupier',
   ];
 
   constructor(
     private servicioReporte: ReporteService,
-    private usuarioService: UsuarioService
   ) {}
+
   ngOnDestroy(): void {
     this.suscripcion.unsubscribe();
   }
@@ -36,12 +35,12 @@ export class ReporteCuatroComponent implements OnInit {
   public obtenerJugadasGanadas() {
     this.suscripcion.add(      
       this.servicioReporte.obtenerTotalGanadasPerdidas().subscribe({
-        next: (respuesta: ReporteCuatro) => {
+        next: (respuesta: ReporteCuatro[]) => {
           this.datos = {
             labels: this.labels,
             datasets: [
               {
-                data: [respuesta.totalGanadas, respuesta.totalPerdidas],
+                data: [respuesta[0].totalGanadas, respuesta[0].totalPerdidas],
               },
             ],
           };
@@ -57,12 +56,31 @@ export class ReporteCuatroComponent implements OnInit {
       legend: {
         position: 'bottom',
         display: true,
+        labels:{
+          font:{
+            family: 'sans-serif',
+            size: 14           
+          }
+        }  
       },
       title: {
-        display: true,
-        text: 'Cantidad de Partidas Ganadas',
+        display: false,
       },
+      datalabels:{
+        color: 'white',
+        formatter: function(value, context) {
+          var data = context.dataset.data,              
+              total = 0;              
+          data.forEach((x) => {
+            if(x!=null){
+              total += x as number;
+            }
+          });    
+          return Math.round((value*100)/total) + '%';
+        },       
+      } 
     },
+    color: 'white',  
   };
 
 }

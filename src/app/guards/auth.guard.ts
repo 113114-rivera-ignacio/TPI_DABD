@@ -4,9 +4,7 @@ import {
   CanActivate,
   Router,
   RouterStateSnapshot,
-  UrlTree,
 } from '@angular/router';
-import { map, Observable } from 'rxjs';
 import { UsuarioService } from '../services/usuario.service';
 
 @Injectable({

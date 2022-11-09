@@ -487,7 +487,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   aumentarPerdidaJugador(){
     this.suscripcion.add(this.usuarioService.aumentarPerdidaJugador(this.usuarioID).subscribe({
       next: () => {
-        alert("+1 perdidas");
+        //alert("+1 perdidas");
       },
       error: () => {
         alert("error al aumentar perdida");
@@ -498,7 +498,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   aumentarGanadaJugador(){
     this.suscripcion.add(this.usuarioService.aumentarGanadaJugador(this.usuarioID).subscribe({
       next: () =>{
-        alert("+1 ganadas")
+        //alert("+1 ganadas")
       },
       error: () => {
         alert("error al aumentar ganada");
@@ -509,7 +509,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   aumentarBlackjackJugador(){
     this.suscripcion.add(this.usuarioService.aumentarBlackJackJugador(this.usuarioID).subscribe({
       next: () =>{
-        alert("+1 bjck jug")
+        //alert("+1 bjck jug")
       },
       error: () =>{
         alert("Error al aumentar blackjack jugador");
@@ -520,7 +520,7 @@ export class BlackjackJuegoComponent implements OnInit, OnDestroy {
   aumentarBlackjackCroupier(){
     this.suscripcion.add(this.usuarioService.aumentarBlackJackCroupier(this.usuarioID).subscribe({
       next: () => {
-        alert("+1 bjck croup")
+        //alert("+1 bjck croup")
       },
       error: () => {
         alert("Error al aumentar blackjack croupier");
